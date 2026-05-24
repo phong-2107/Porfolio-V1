@@ -1,0 +1,19 @@
+{
+  "project": "portfolio-v1",
+  "scenes": [
+    {
+      "id": "hero",
+      "goal": "Introduce identity and establish 3D visual world",
+      "scrollBehavior": "Pinned hero, model rotates and camera pushes in while headline reveals",
+      "mustHave": ["headline readable", "3D fallback", "scroll indicator fades"],
+      "avoid": ["overly long pin", "text inside canvas only"]
+    },
+    {
+      "id": "projects",
+      "goal": "Showcase work with premium staggered reveals",
+      "scrollBehavior": "Cards rise with blur, active card scales, thumbnails parallax",
+      "mustHave": ["fast hover", "responsive grid", "no layout shift"],
+      "avoid": ["animating all cards continuously"]
+    }
+  ]
+}

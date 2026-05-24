@@ -37,13 +37,13 @@ export default function HeaderMenu({ isHamburgActive, onHamburgClick }: Props) {
                 <a 
                   href="#projects" 
                   className="motion-hover"
-                  onClick={(e) => {
+                   onClick={(e) => {
                     e.preventDefault();
-                    if (window.location.pathname === "/") scrollToSection('feature' as any);
-                    else window.location.href = "/#feature";
+                    if (window.location.pathname === '/') scrollToSection('projects' as any);
+                    else window.location.href = '/#projects';
                   }}
                 >
-                  PROJECTS (7)
+                  PROJECTS (2)
                 </a>
               </li>
               <li>

@@ -80,6 +80,9 @@ function InteractiveBasketball() {
   // GSAP ScrollTrigger Integration
   useGSAP(() => {
     if (!groupRef.current) return;
+    
+    const isMobile = window.innerWidth < 768;
+    const s = isMobile ? 0.6 : 1.0;
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -92,21 +95,21 @@ function InteractiveBasketball() {
     });
 
     // Transition 1: Hero (Sec 1) -> Elite Control (Sec 2)
-    // Move right, scale up, and roll
-    tl.to(groupRef.current.position, { x: viewport.width / 3.5, y: 0, z: 0, ease: "none" }, 0)
-      .to(groupRef.current.scale, { x: 2.5, y: 2.5, z: 2.5, ease: "none" }, 0)
-      .to(groupRef.current.rotation, { y: Math.PI * 2, x: Math.PI * 0.1, ease: "none" }, 0);
+    // Move right (or up on mobile), scale up slightly, and roll
+    tl.to(groupRef.current.position, { x: isMobile ? 0 : viewport.width / 4.5, y: isMobile ? 2.5 : 0, z: 0, ease: "power1.inOut", duration: 1 }, 0)
+      .to(groupRef.current.scale, { x: s * 2.0, y: s * 2.0, z: s * 2.0, ease: "power1.inOut", duration: 1 }, 0)
+      .to(groupRef.current.rotation, { y: Math.PI * 2, x: Math.PI * 0.1, ease: "power1.inOut", duration: 1 }, 0);
 
     // Transition 2: Elite Control (Sec 2) -> Perfect Flight (Sec 3)
-    // Move all the way across to the left, keep scale massive, continue rolling
-    tl.to(groupRef.current.position, { x: -viewport.width / 3.5, ease: "none" }, "+=0.5")
-      .to(groupRef.current.rotation, { y: Math.PI * 4, ease: "none" }, "<");
+    // Move across to the left (or down on mobile), maintain scale, continue rolling
+    tl.to(groupRef.current.position, { x: isMobile ? 0 : -viewport.width / 4.5, y: isMobile ? -2.5 : 0, ease: "power1.inOut", duration: 1 }, "+=0.2")
+      .to(groupRef.current.rotation, { y: Math.PI * 4, ease: "power1.inOut", duration: 1 }, "<");
 
     // Transition 3: Perfect Flight (Sec 3) -> HUD (Sec 4)
     // Return to dead center, scale back down, and adjust to technical angle
-    tl.to(groupRef.current.position, { x: 0, y: 0, ease: "none" }, "+=0.5")
-      .to(groupRef.current.scale, { x: 1, y: 1, z: 1, ease: "none" }, "<")
-      .to(groupRef.current.rotation, { y: Math.PI * 6.5, x: Math.PI * 0.35, ease: "none" }, "<");
+    tl.to(groupRef.current.position, { x: 0, y: 0, ease: "power1.inOut", duration: 1 }, "+=0.2")
+      .to(groupRef.current.scale, { x: s * 1.2, y: s * 1.2, z: s * 1.2, ease: "power1.inOut", duration: 1 }, "<")
+      .to(groupRef.current.rotation, { y: Math.PI * 6.5, x: Math.PI * 0.35, ease: "power1.inOut", duration: 1 }, "<");
 
   }, { dependencies: [viewport.width] });
 
@@ -142,7 +145,7 @@ function InteractiveBasketball() {
           roughness={0.98}
           metalness={0.0}
           normalMap={normalMap}
-          normalScale={new THREE.Vector2(1.5, 1.5)}
+          normalScale={new THREE.Vector2(2.0, 2.0)}
           clearcoat={0.0}
           reflectivity={0.1}
           sheen={0.8}
@@ -170,6 +173,7 @@ export default function BasketballScene() {
     <div className="w-full h-full pointer-events-none">
       <Canvas 
         shadows={{ type: THREE.PCFShadowMap }}
+        dpr={[1, 1.5]}
         gl={{ 
           antialias: true, 
           toneMapping: THREE.ACESFilmicToneMapping,
@@ -181,16 +185,19 @@ export default function BasketballScene() {
       >
         <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
         
-        <ambientLight intensity={0.02} />
-        <spotLight position={[5, 10, 10]} angle={0.3} penumbra={1} intensity={1200} color="#ffffff" castShadow />
-        <spotLight position={[-10, 8, -10]} angle={0.2} penumbra={0.1} intensity={2500} color="#ffffff" />
-        <pointLight position={[0, -8, 2]} intensity={100} color="#ff7a1a" />
+        <ambientLight intensity={0.1} />
+        {/* Key Light - Warm */}
+        <spotLight position={[5, 10, 10]} angle={0.3} penumbra={1} intensity={1500} color="#fff0e0" castShadow />
+        {/* Rim Light - Cool Cyan */}
+        <spotLight position={[-10, 8, -10]} angle={0.2} penumbra={0.1} intensity={3000} color="#12d6dd" />
+        {/* Bottom Fill - Orange */}
+        <pointLight position={[0, -8, 2]} intensity={200} color="#ff7a1a" />
 
         <Float speed={1.2} rotationIntensity={0.1} floatIntensity={0.1}>
           <InteractiveBasketball />
         </Float>
         
-        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2.5} far={5} />
+        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2.5} far={5} resolution={256} />
         <Environment preset="night" />
       </Canvas>
     </div>

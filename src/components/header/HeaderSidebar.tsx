@@ -8,12 +8,9 @@ interface Props {
 }
 
 const sectionLinks = [
-  { label: "About Us", anchor: "about" },
-  { label: "Services", anchor: "services" },
-  { label: "Projects", anchor: "feature" },
-  { label: "Awards", anchor: "awards" },
-  { label: "Members", anchor: "team" },
-  { label: "Pricing", anchor: "price" },
+  { label: "About & Stack", anchor: "about" },
+  { label: "Projects", anchor: "projects" },
+  { label: "Experience", anchor: "contact" },
   { label: "Contact", anchor: "contact" },
 ];
 
