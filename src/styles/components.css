@@ -1,0 +1,71 @@
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  color: transparent;
+}
+
+.glow-orange {
+  box-shadow: var(--shadow-orange);
+}
+
+.theme-btn-primary {
+  background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-hover));
+  color: var(--bg-deep);
+  box-shadow: var(--shadow-orange);
+  transition:
+    transform 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    filter 180ms var(--ease-out);
+}
+
+.theme-btn-primary:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.theme-btn-primary:active {
+  transform: translateY(0);
+}
+
+.portfolio-icon-button {
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  transition:
+    color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out);
+}
+
+.portfolio-icon-button:hover {
+  color: var(--text-primary);
+  border-color: var(--border-cyan);
+  background: rgba(16, 42, 48, 0.45);
+}
+
+.portfolio-text-secondary {
+  color: var(--text-secondary);
+}
+
+.portfolio-text-muted {
+  color: var(--text-muted);
+}
+
+.portfolio-accent {
+  color: var(--accent-orange);
+}
+
+.portfolio-support {
+  color: var(--accent-cyan);
+}
+
+.portfolio-border-subtle {
+  border-color: var(--border-subtle);
+}
+
+.portfolio-surface-glass {
+  background: var(--surface-glass);
+  border-color: var(--border-subtle);
+}
+
+.portfolio-wordmark {
+  color: rgba(248, 250, 252, 0.05);
+}

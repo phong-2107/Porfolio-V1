@@ -1,0 +1,8 @@
+interface:
+  display_name: "PhongDev Portfolio Migration"
+  short_description: "Migrate PhongDev portfolio structure"
+  brand_color: "#FF7A1A"
+  default_prompt: "Use $phongdev-portfolio-migration to build a new React/Vite portfolio from the current PhongDev project while preserving reusable components, styles, Spline hero, and GSAP motion safely."
+
+policy:
+  allow_implicit_invocation: true

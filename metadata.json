@@ -1,0 +1,8 @@
+{
+  "name": "SLAM DUNK E-commerce",
+  "description": "Premium 3D basketball e-commerce hero experience",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,64 @@
+.hero-shell {
+  color: var(--text-primary);
+}
+
+.hero-nav-link {
+  color: var(--text-secondary);
+  transition: color 180ms var(--ease-out), border-color 180ms var(--ease-out);
+}
+
+.hero-nav-link:hover {
+  color: var(--text-primary);
+}
+
+.hero-nav-link.is-active {
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.hero-play-button {
+  background: rgba(16, 42, 48, 0.38);
+  border: 1px solid var(--border-subtle);
+  transition:
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+
+.hero-play-button:hover {
+  background: rgba(22, 59, 67, 0.55);
+  border-color: var(--border-cyan);
+  transform: translateY(-1px);
+}
+
+.hero-metric-line-left {
+  border-left: 1px solid var(--border-subtle);
+}
+
+.hero-metric-line-right {
+  border-right: 1px solid var(--border-subtle);
+}
+
+.hero-section-panel {
+  background: linear-gradient(180deg, rgba(2, 6, 8, 0) 0%, rgba(2, 6, 8, 0.18) 100%);
+}
+
+.hero-hud-ring-1 {
+  border-color: var(--border-strong);
+}
+
+.hero-hud-ring-2 {
+  border-color: rgba(248, 250, 252, 0.05);
+}
+
+.hero-hud-ring-3 {
+  border-color: rgba(18, 214, 221, 0.18);
+}
+
+.hero-hud-crosshair {
+  background: rgba(248, 250, 252, 0.08);
+}
+
+.hero-hud-center {
+  border-color: rgba(255, 122, 26, 0.5);
+}

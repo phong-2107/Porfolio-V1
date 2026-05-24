@@ -1,0 +1,180 @@
+:root {
+  --color-accent: var(--accent-orange);
+}
+
+.motion-hover {
+  --motion-x: 0px;
+  --motion-y: 0px;
+  --motion-tilt-x: 0deg;
+  --motion-tilt-y: 0deg;
+  --motion-scale: 1;
+  transform:
+    translate3d(var(--motion-x), var(--motion-y), 0)
+    rotateX(var(--motion-tilt-x))
+    rotateY(var(--motion-tilt-y))
+    scale(var(--motion-scale));
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.motion-hover.is-pointer-active {
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.header-menu-wrap a.motion-hover,
+.notch-bar-menu-wrap a.motion-hover {
+  display: inline-flex;
+  transform-origin: center;
+}
+
+.header-menu-wrap a.motion-hover.is-pointer-active,
+.notch-bar-menu-wrap a.motion-hover.is-pointer-active {
+  color: var(--color-accent);
+  text-shadow: 0 0 24px rgba(252, 101, 3, 0.22);
+}
+
+.motion-hover.is-pointer-active.theme-btn {
+  box-shadow: 0 24px 72px rgba(93, 254, 254, 0.22), 0 8px 28px rgba(252, 101, 3, 0.18);
+}
+
+.motion-hover.is-pointer-active.service-box,
+.motion-hover.is-pointer-active.feature-project,
+.motion-hover.is-pointer-active.pricing-box,
+.motion-hover.is-pointer-active.team-member-box,
+.motion-hover.is-pointer-active.testimonial-box {
+  border-color: rgba(254, 255, 247, 0.3);
+  box-shadow: 0 36px 120px rgba(93, 254, 254, 0.18), 0 12px 42px rgba(0, 0, 0, 0.2);
+}
+
+html.has-motion-cursor,
+html.has-motion-cursor *,
+body.has-motion-cursor,
+body.has-motion-cursor * {
+  cursor: none !important;
+}
+
+.motion-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.motion-cursor.is-visible {
+  opacity: 1;
+}
+
+.motion-cursor--dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #12D6DD;
+  box-shadow: 0 0 16px rgba(18, 214, 221, 0.5);
+  transition:
+    opacity 0.2s ease,
+    width 0.22s ease,
+    height 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.motion-cursor--ring {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 38px rgba(93, 254, 254, 0.32);
+  transition:
+    opacity 0.2s ease,
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.motion-cursor--dot.is-hovering {
+  width: 12px;
+  height: 12px;
+  background: #12D6DD;
+  box-shadow: 0 0 24px rgba(18, 214, 221, 0.9);
+}
+
+.motion-cursor--ring.is-hovering {
+  width: 88px;
+  height: 88px;
+  border: 1px solid rgba(18, 214, 221, 0.8);
+  background: rgba(255, 122, 26, 0.08);
+  box-shadow: 
+    0 0 32px rgba(18, 214, 221, 0.3),
+    inset 0 0 20px rgba(255, 122, 26, 0.15);
+}
+
+.motion-cursor--dot.is-pressed {
+  width: 6px;
+  height: 6px;
+}
+
+.motion-cursor--ring.is-pressed {
+  width: 44px;
+  height: 44px;
+}
+
+@media (hover: none) {
+  html.has-motion-cursor,
+  html.has-motion-cursor *,
+  body.has-motion-cursor,
+  body.has-motion-cursor * {
+    cursor: auto !important;
+  }
+
+  .motion-cursor {
+    display: none;
+  }
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .motion-hover,
+  .motion-hover.is-pointer-active {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.pricing-box.motion-hover:hover {
+  transform:
+    translate3d(var(--motion-x), calc(var(--motion-y) - 10px), 0)
+    rotateX(var(--motion-tilt-x))
+    rotateY(var(--motion-tilt-y))
+    scale(var(--motion-scale));
+}
+
+.testimonial-box.motion-hover:hover {
+  transform:
+    translate3d(var(--motion-x), calc(var(--motion-y) - 8px), 0)
+    rotateX(var(--motion-tilt-x))
+    rotateY(var(--motion-tilt-y))
+    scale(var(--motion-scale));
+}
+
+.service-box.motion-hover:hover,
+.feature-project.motion-hover:hover,
+.team-member-box.motion-hover:hover,
+.theme-btn.motion-hover:hover {
+  transform:
+    translate3d(var(--motion-x), var(--motion-y), 0)
+    rotateX(var(--motion-tilt-x))
+    rotateY(var(--motion-tilt-y))
+    scale(var(--motion-scale));
+}
