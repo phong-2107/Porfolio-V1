@@ -1,32 +1,36 @@
 :root {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Outfit", sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-  --bg-base: #071a1f;
-  --bg-deep: #020608;
-  --bg-surface: #102a30;
-  --bg-surface-hover: #163b43;
+  --bg-base: #0a0d16;          /* Obsidian Steel (Trầm ấm) */
+  --bg-deep: #05070c;          /* Onyx Void (Dịu nhẹ) */
+  --bg-surface: #101422;       /* Soft Surface */
+  --bg-surface-hover: #161c2e;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #a7b4bd;
-  --text-muted: rgba(167, 180, 189, 0.68);
+  --text-primary: #f1f5f9;     /* Trắng ngà dịu */
+  --text-secondary: #64748b;   /* Xám thép mát */
+  --text-muted: rgba(100, 116, 139, 0.6);
 
-  --accent-orange: #ff7a1a;
-  --accent-orange-hover: #ff9a4d;
-  --accent-cyan: #12d6dd;
-  --accent-mint: #46cf98;
+  --accent-orange: #f25c05;    /* Burnt Tangerine (Sang trọng) */
+  --accent-orange-hover: #ff7324;
+  --accent-cyan: #0df5d5;      /* Cyber Mint (Êm dịu) */
+  --accent-mint: #0df5d5;
+  --accent-indigo: #3b82f6;    /* Muted Royal Blue */
+  --accent-violet: #6366f1;    /* Muted Indigo-Violet */
 
-  --border-subtle: rgba(248, 250, 252, 0.08);
-  --border-strong: rgba(248, 250, 252, 0.14);
-  --border-cyan: rgba(18, 214, 221, 0.24);
-  --border-orange: rgba(255, 122, 26, 0.28);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-strong: rgba(255, 255, 255, 0.09);
+  --border-cyan: rgba(13, 245, 213, 0.15);
+  --border-orange: rgba(242, 92, 5, 0.15);
 
-  --surface-glass: rgba(7, 26, 31, 0.72);
-  --surface-card: rgba(16, 42, 48, 0.82);
+  --surface-glass: rgba(10, 13, 22, 0.6);
+  --surface-card: rgba(16, 20, 34, 0.7);
 
-  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.28);
-  --shadow-orange: 0 18px 60px rgba(255, 122, 26, 0.18);
-  --shadow-cyan: 0 18px 60px rgba(18, 214, 221, 0.12);
+  --shadow-card: 0 32px 80px rgba(0, 0, 0, 0.4);
+  --shadow-orange: 0 18px 60px rgba(242, 92, 5, 0.1);
+  --shadow-cyan: 0 18px 60px rgba(13, 245, 213, 0.08);
 
   --radius-sm: 10px;
   --radius-md: 18px;
@@ -42,8 +46,11 @@
 }
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Outfit", sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
   --color-orange-vivid: var(--accent-orange);
   --color-bg-base: var(--bg-base);
   --color-bg-deep: var(--bg-deep);
@@ -52,6 +59,8 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent-cyan: var(--accent-cyan);
+  --color-accent-mint: var(--accent-mint);
+  --color-accent-orange: var(--accent-orange);
 
   @keyframes marquee {
     0% {

@@ -1,3 +1,16 @@
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+.motion-mask {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.motion-line {
+  display: inline-block;
+  transform: translateY(105%) rotate(2deg);
+  opacity: 0;
+  will-change: transform, opacity;
+}

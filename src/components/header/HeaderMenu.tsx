@@ -1,4 +1,5 @@
-import { Mail, ChevronDown } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Mail } from 'lucide-react';
 import { scrollToHomeTop, scrollToSection } from '../utilities/scrollNavigation';
 
 interface Props {
@@ -18,77 +19,113 @@ export default function HeaderMenu({ isHamburgActive, onHamburgClick }: Props) {
     window.location.href = "/";
   };
 
+  const springConfig = { type: 'spring', stiffness: 400, damping: 20 };
+
   return (
     <>
       <header className="creative-header-wrap">
         <div className="creative-outer-pill">
           {/* Left: Logo */}
           <div className="creative-logo">
-            <a href="/" onClick={handleHomeClick} className="motion-hover">
-              <img src="/assets/images/logo-1.png" alt="PhongDev" />
-            </a>
+            <motion.a 
+              href="/" 
+              onClick={handleHomeClick} 
+              className="font-display flex items-center text-lg font-black italic leading-none tracking-tighter cursor-pointer"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={springConfig}
+            >
+              <span className="text-white">PHONG</span>
+              <span className="portfolio-accent" style={{ color: 'var(--accent-orange)' }}>DEV</span>
+            </motion.a>
           </div>
           
           {/* Center: Inner Nav Pill */}
           <nav className="creative-inner-pill-nav">
             <ul className="creative-menu">
-              <li><a href="/" onClick={handleHomeClick} className="motion-hover">HOME</a></li>
               <li>
-                <a 
-                  href="#projects" 
-                  className="motion-hover"
-                   onClick={(e) => {
-                    e.preventDefault();
-                    if (window.location.pathname === '/') scrollToSection('projects' as any);
-                    else window.location.href = '/#projects';
-                  }}
+                <motion.a 
+                  href="/" 
+                  onClick={handleHomeClick} 
+                  className="cursor-pointer"
+                  whileHover={{ scale: 1.08, color: 'var(--accent-orange)' }}
+                  transition={springConfig}
                 >
-                  PROJECTS (2)
-                </a>
+                  HOME
+                </motion.a>
               </li>
               <li>
-                <a 
+                <motion.a 
                   href="#about" 
-                  className="motion-hover"
+                  className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     if (window.location.pathname === "/") scrollToSection('about' as any);
                     else window.location.href = "/#about";
                   }}
+                  whileHover={{ scale: 1.08, color: 'var(--accent-orange)' }}
+                  transition={springConfig}
                 >
                   ABOUT
-                </a>
+                </motion.a>
               </li>
               <li>
-                <a 
+                <motion.a 
+                  href="#projects" 
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (window.location.pathname === '/') scrollToSection('projects' as any);
+                    else window.location.href = '/#projects';
+                  }}
+                  whileHover={{ scale: 1.08, color: 'var(--accent-orange)' }}
+                  transition={springConfig}
+                >
+                  PROJECTS
+                </motion.a>
+              </li>
+              <li>
+                <motion.a 
                   href="#contact" 
-                  className="motion-hover"
+                  className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     if (window.location.pathname === "/") scrollToSection('contact' as any);
                     else window.location.href = "/#contact";
                   }}
+                  whileHover={{ scale: 1.08, color: 'var(--accent-orange)' }}
+                  transition={springConfig}
                 >
                   CONTACT
-                </a>
-              </li>
-              <li className="has-dropdown">
-                <a href="#pages" className="motion-hover">
-                  ALL PAGES <ChevronDown size={14} />
-                </a>
+                </motion.a>
               </li>
             </ul>
           </nav>
-
+ 
           {/* Right: Contact & CTA */}
           <div className="creative-right-actions">
-            <span className="contact-phone">(+84) 0345651206</span>
-            <a href="#mail" className="contact-mail-icon motion-hover">
+            <motion.a 
+              href="mailto:phongg.dev@gmail.com" 
+              className="contact-mail-icon cursor-pointer"
+              whileHover={{ scale: 1.2, rotate: 6 }}
+              whileTap={{ scale: 0.92 }}
+              transition={springConfig}
+            >
               <Mail size={18} />
-            </a>
-            <a href="#contact" className="creative-cta-btn motion-hover">
+            </motion.a>
+            <motion.a 
+              href="#contact" 
+              className="creative-cta-btn cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('contact' as any);
+              }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={springConfig}
+            >
               Get in touch
-            </a>
+            </motion.a>
           </div>
         </div>
       </header>

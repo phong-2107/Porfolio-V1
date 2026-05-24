@@ -62,3 +62,227 @@
 .hero-hud-center {
   border-color: rgba(255, 122, 26, 0.5);
 }
+
+/* ─── Career Timeline Section ─── */
+.career-section {
+  position: relative;
+  background: linear-gradient(180deg, rgba(2, 6, 8, 0) 0%, rgba(2, 6, 8, 0.2) 100%);
+  overflow: hidden;
+}
+
+/* Timeline Layout */
+.timeline-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Central vertical axis */
+.timeline-axis {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.timeline-line-base {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--border-strong);
+  opacity: 0.5;
+}
+
+.timeline-line-progress {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, var(--accent-orange), var(--accent-cyan));
+  transform-origin: top;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* Glowing Tracer Dot */
+.timeline-tracer-dot {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  box-shadow: 
+    0 0 15px 4px var(--accent-orange),
+    0 0 30px 8px rgba(13, 245, 213, 0.4);
+  pointer-events: none;
+  z-index: 10;
+  will-change: top;
+}
+
+/* Individual Career Item styling */
+.career-item {
+  position: relative;
+  display: grid;
+  grid-template-cols: 1fr 100px 1fr;
+  align-items: center;
+  margin-bottom: 120px;
+  width: 100%;
+}
+
+.career-item:last-child {
+  margin-bottom: 40px;
+}
+
+/* Left side details (align text right) */
+.career-left {
+  text-align: right;
+  padding-right: 40px;
+  will-change: transform, opacity, filter;
+}
+
+/* Center node */
+.career-center {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 5;
+}
+
+.career-item-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  z-index: 6;
+  transition: all 400ms var(--ease-out);
+}
+
+.career-year {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 400ms var(--ease-out);
+}
+
+/* Position years offset from the node */
+.career-item:nth-child(odd) .career-year {
+  left: calc(50% + 20px);
+}
+.career-item:nth-child(even) .career-year {
+  right: calc(50% + 20px);
+}
+
+/* Right side description (align text left) */
+.career-right {
+  text-align: left;
+  padding-left: 40px;
+  will-change: transform, opacity, filter;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  .timeline-axis {
+    left: 20px;
+    transform: none;
+  }
+  
+  .timeline-tracer-dot {
+    left: 20px;
+    margin-left: -8px;
+  }
+  
+  .career-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 50px;
+    margin-bottom: 60px;
+    text-align: left;
+  }
+  
+  .career-left {
+    text-align: left;
+    padding-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .career-center {
+    display: none; /* Hide center node/year columns on mobile grid */
+  }
+  
+  .career-right {
+    text-align: left;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  /* Inline Year for Mobile */
+  .career-mobile-year {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--accent-orange);
+    margin-bottom: 8px;
+  }
+}
+
+@media (min-width: 769px) {
+  .career-mobile-year {
+    display: none;
+  }
+
+  /* Asymmetric left timeline layout */
+  .timeline-asymmetric-container .timeline-axis {
+    left: 12%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-asymmetric-container .timeline-tracer-dot {
+    left: 12%;
+    margin-left: -8px;
+  }
+
+  .timeline-asymmetric-container .career-item {
+    grid-template-cols: 80px 80px 1fr;
+  }
+
+  .timeline-asymmetric-container .career-left {
+    display: none; /* Trục năm hiển thị ở cột giữa cạnh node */
+  }
+
+  .timeline-asymmetric-container .career-center {
+    grid-column: 2;
+  }
+
+  .timeline-asymmetric-container .career-right {
+    grid-column: 3;
+    padding-left: 20px;
+    text-align: left;
+  }
+
+  .timeline-asymmetric-container .career-year {
+    right: calc(50% + 20px);
+    left: auto !important;
+  }
+}

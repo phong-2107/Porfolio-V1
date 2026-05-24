@@ -85,12 +85,28 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
+    company: 'HUTECH University (Academic Projects)',
+    role: 'Full-Stack Developer & Team Lead',
+    period: '10/2021 – 01/2025',
+    description: 'Bắt đầu hành trình lập trình và lãnh đạo nhóm phát triển các dự án lớn như MangaSmurf (Comic platform với ASP.NET Core) và TimTro24h (MERN stack). Thực hiện thiết kế hệ thống, tích hợp cổng thanh toán VNPay, và viết kịch bản kiểm thử tự động Cypress.',
+    skills: ['ASP.NET Core', 'ReactJS', 'Node.js', 'Cypress', 'MongoDB'],
+    year: '2021',
+  },
+  {
     company: 'DEK Technologies Vietnam (AWS Project)',
     role: 'Cloud Engineer Intern',
     period: '06/2025 – 08/2025',
-    description:
-      'System builder role integrating backend services with AWS tools to enhance product experience and resolve project issues.',
-    skills: ['AWS EC2', 'S3', 'Backend Integration'],
+    description: 'Đóng vai trò kỹ sư Cloud xây dựng và tích hợp các dịch vụ backend với AWS để tăng trải nghiệm sản phẩm và khắc phục lỗi dự án. Làm việc trong môi trường Scrum/Agile chuyên nghiệp.',
+    skills: ['AWS EC2', 'S3', 'Backend Integration', 'Agile / Scrum'],
+    year: '2025',
+  },
+  {
+    company: 'Freelance & Self-directed Learning',
+    role: 'Freelance Full-Stack Developer',
+    period: '09/2025 – NOW',
+    description: 'Thiết kế & phát triển các ứng dụng web chất lượng cao, các trang portfolio cá nhân tương tác 3D mượt mà cho khách hàng. Nghiên cứu sâu về GSAP, WebGL, và các giải pháp tối ưu hóa hiệu năng render UI.',
+    skills: ['React 19', 'TypeScript', 'GSAP Motion', 'Spline 3D', 'CSS Tech'],
+    year: 'NOW',
   },
 ] as const;
 
