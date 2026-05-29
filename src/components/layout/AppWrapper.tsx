@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
 import { useLoading } from "../../hooks/useLoading";
+import DownloadResumeButton from "../ui/DownloadResumeButton";
 
 interface AppWrapperProps {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
 
   return (
     <>
+      <div className="noise-overlay" />
       <AnimatePresence mode="wait">
         {isLoading && (
           <LoadingScreen />
@@ -44,6 +46,8 @@ export default function AppWrapper({ children }: AppWrapperProps) {
       >
         {children}
       </div>
+      
+      <DownloadResumeButton />
     </>
   );
 }

@@ -47,7 +47,7 @@ export const PROJECTS = [
     name: 'MangaSmurf',
     subtitle: 'Comic Reading Platform',
     period: '08/2024 – 12/2024',
-    role: 'Team Leader & Main Developer (Team of 3)',
+    role: 'Team Leader & Main Developer',
     stack: ['ASP.NET Core', 'jQuery', 'Ajax', 'Bootstrap', 'Flask (Python)'],
     description:
       'A modern manga-reading platform recognized for its creative approach, user-friendly design, and practical features.',
@@ -59,15 +59,19 @@ export const PROJECTS = [
       'Recommendation engine with Python similarity-based models',
     ],
     github: 'github.com/phongdev/Mangasmurf',
+    demoUrl: 'https://github.com/phongdev/Mangasmurf',
+    videoUrl: '/assets/videos/Video3.mp4',
     tag: 'Full-Stack · .NET',
     accent: 'orange',
+    layout: 'wide',
+    image: '/assets/images/mangasmurf_mockup.png'
   },
   {
     id: 'timtro24h',
     name: 'TimTro24h',
     subtitle: 'Room Rental Finder Web App',
     period: '01/2025 – 04/2025',
-    role: 'Team Leader & Main Developer (Team of 3)',
+    role: 'Team Leader & Main Developer',
     stack: ['Node.js', 'MongoDB', 'ReactJS', 'Google Maps API'],
     description:
       'A platform helping students and young professionals efficiently search for rental rooms with speed, accuracy, and great UX.',
@@ -78,9 +82,59 @@ export const PROJECTS = [
       'E2E automated tests with Cypress for key user flows',
     ],
     github: 'github.com/phongdev/timtro24h',
+    demoUrl: 'https://github.com/phongdev/timtro24h',
+    videoUrl: '/assets/videos/Video1.mp4',
     tag: 'Full-Stack · MERN',
     accent: 'cyan',
+    layout: 'tall',
+    image: '/assets/images/timtro24h_mockup.png'
   },
+  {
+    id: 'awscloud',
+    name: 'AWS Cloud Infrastructure',
+    subtitle: 'Cloud Deployment & Networking',
+    period: '06/2025 – 08/2025',
+    role: 'Cloud Engineer Intern',
+    stack: ['AWS EC2', 'AWS S3', 'VPC', 'IAM', 'Scrum/Agile'],
+    description:
+      'Xây dựng và tối ưu hóa cơ sở hạ tầng đám mây AWS cho các dịch vụ backend, cải thiện độ trễ và khả năng chịu tải.',
+    highlights: [
+      'Triển khai các EC2 instances trong mạng VPC bảo mật',
+      'Tích hợp AWS S3 để lưu trữ tệp và assets tĩnh hiệu năng cao',
+      'Phân quyền IAM chính xác đảm bảo nguyên tắc bảo mật tối thiểu',
+      'Làm việc trong môi trường Scrum/Agile chuyên nghiệp tại DEK Technologies',
+    ],
+    github: 'github.com/phongdev/aws-cloud-infrastructure',
+    demoUrl: 'https://github.com/phongdev/aws-cloud-infrastructure',
+    videoUrl: '/assets/videos/Video2.mp4',
+    tag: 'Cloud · DevOps',
+    accent: 'cyan',
+    layout: 'normal',
+    image: '/assets/images/aws_cloud_mockup.png'
+  },
+  {
+    id: 'portfolio3d',
+    name: '3D Interactive Portfolio',
+    subtitle: 'Immersive Digital Experience',
+    period: '09/2025 – NOW',
+    role: 'Freelance Developer',
+    stack: ['React 19', 'TypeScript', 'GSAP', 'Spline 3D', 'Vite'],
+    description:
+      'Trang portfolio cá nhân thế hệ mới với mô hình 3D tương tác thời gian thực, chuyển động cuộn cinematic.',
+    highlights: [
+      'Tích hợp mô hình Spline 3D tương tác mượt mà theo cử chỉ chuột',
+      'Thiết lập chuỗi chuyển động kể chuyện (Scroll Storytelling) với GSAP',
+      'Tối ưu hóa GPU render đạt hiệu năng mượt mà 60fps trên di động',
+      'Bố cục Bento Grid bất đối xứng kết hợp hiệu ứng kính mờ glassmorphism',
+    ],
+    github: 'github.com/phongdev/3d-interactive-portfolio',
+    demoUrl: 'https://github.com/phongdev/3d-interactive-portfolio',
+    videoUrl: '/assets/videos/Video2.mp4',
+    tag: 'Frontend · Motion',
+    accent: 'orange',
+    layout: 'normal',
+    image: '/assets/images/portfolio_mockup.png'
+  }
 ] as const;
 
 export const EXPERIENCE = [

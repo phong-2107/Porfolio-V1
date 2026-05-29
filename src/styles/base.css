@@ -30,3 +30,34 @@ html {
     color: var(--text-primary);
   }
 }
+
+/* Animated Noise Film Grain Overlay */
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAgp1DfAAAABlBMVEUAAAD///+l2Z/dAAAAnUlEQVR42u3XwQ7EIAgE0P//p5deiqurZg8m8eCpGzAwzBvjH8u2L+XN1Vv58t1c/e9b+fLtXL2Vf/5b+fLtXL2Vf76V259v5dO3c/lW/vnL3P7yrXz6di7fyj9/mdtfvpVv59P/Vv75y9z+8q18+nYu38o/f5nbX76VT9/O5Vv551u5/flWPn07l2/ln7/M7S/fypfv5up/X8p3j0/uI5oKzHwAAAAASUVORK5CYII=") repeat;
+  opacity: 0.045;
+  pointer-events: none;
+  z-index: 9999;
+  animation: noise-shift 0.22s infinite steps(4);
+  will-change: transform;
+}
+
+@keyframes noise-shift {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(-2%, 1%); }
+  30% { transform: translate(1%, -2%); }
+  40% { transform: translate(-1%, 2%); }
+  50% { transform: translate(-2%, 1%); }
+  60% { transform: translate(2%, -1%); }
+  70% { transform: translate(1%, 1%); }
+  80% { transform: translate(1%, -2%); }
+  90% { transform: translate(-1%, 2%); }
+  100% { transform: translate(0, 0); }
+}

@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Mail } from 'lucide-react';
 import { scrollToHomeTop, scrollToSection } from '../utilities/scrollNavigation';
+import { playClickSound } from '../utilities/clickSound';
 
 interface Props {
   isHamburgActive: boolean;
@@ -11,6 +12,7 @@ interface Props {
 export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburgClick }: Props) {
   const handleHomeClick = (event: React.MouseEvent) => {
     event.preventDefault();
+    playClickSound();
 
     if (window.location.pathname === "/") {
       scrollToHomeTop();
@@ -63,6 +65,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
                   className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
+                    playClickSound();
                     if (window.location.pathname === "/") scrollToSection('about' as any);
                     else window.location.href = "/#about";
                   }}
@@ -78,6 +81,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
                   className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
+                    playClickSound();
                     if (window.location.pathname === '/') scrollToSection('projects' as any);
                     else window.location.href = '/#projects';
                   }}
@@ -93,6 +97,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
                   className="cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
+                    playClickSound();
                     if (window.location.pathname === "/") scrollToSection('contact' as any);
                     else window.location.href = "/#contact";
                   }}
@@ -110,6 +115,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
             <motion.a 
               href="mailto:phongg.dev@gmail.com" 
               className="contact-mail-icon cursor-pointer"
+              onClick={() => playClickSound()}
               whileHover={{ scale: 1.2, rotate: 6 }}
               whileTap={{ scale: 0.92 }}
               transition={springConfig}
@@ -121,6 +127,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
               className="creative-cta-btn cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
+                playClickSound();
                 scrollToSection('contact' as any);
               }}
               whileHover={{ scale: 1.04 }}
@@ -136,7 +143,10 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
       {/* Hamburg Menu (Floating at top right) */}
       <span 
         className={`hamburg-menu ${isHamburgActive && !isSidebarActive ? "active" : ""}`} 
-        onClick={onHamburgClick}
+        onClick={() => {
+          playClickSound();
+          onHamburgClick();
+        }}
       >
         <span />
         <span />

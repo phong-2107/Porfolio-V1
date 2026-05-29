@@ -31,6 +31,9 @@ export default function SplineHeroScene() {
   });
 
   const lastHoverOffset = useRef({ x: 0, y: 0, z: 0 });
+  const xTo = useRef<any>(null);
+  const yTo = useRef<any>(null);
+  const zTo = useRef<any>(null);
 
   // Tránh lặp lại onLoad khi StrictMode render 2 lần
   const [isLoaded, setIsLoaded] = useState(false);
@@ -262,14 +265,20 @@ export default function SplineHeroScene() {
         const oz = -pitch * sinT;
         lastHoverOffset.current = { x: ox, y: oy, z: oz };
 
-        gsap.to(monitor.rotation, {
-          x: baseRot.current.monitorX + ox,
-          y: baseRot.current.monitorY + oy,
-          z: baseRot.current.monitorZ + oz,
-          duration: 0.15,
-          ease: 'power1.out',
-          overwrite: 'auto'
-        });
+        if (xTo.current && yTo.current && zTo.current) {
+          xTo.current(baseRot.current.monitorX + ox);
+          yTo.current(baseRot.current.monitorY + oy);
+          zTo.current(baseRot.current.monitorZ + oz);
+        } else {
+          gsap.to(monitor.rotation, {
+            x: baseRot.current.monitorX + ox,
+            y: baseRot.current.monitorY + oy,
+            z: baseRot.current.monitorZ + oz,
+            duration: 0.15,
+            ease: 'power1.out',
+            overwrite: 'auto'
+          });
+        }
       } else if (state === 'about') {
         // Khi ở Technical Profile (About): Giới hạn chỉ hover theo trỏ chuột bên trái
         const isLeft = e.clientX < window.innerWidth * 0.55;
@@ -290,14 +299,20 @@ export default function SplineHeroScene() {
           const oz = -pitch * sinT;
           lastHoverOffset.current = { x: ox, y: oy, z: oz };
 
-          gsap.to(monitor.rotation, {
-            x: baseRot.current.monitorX + ox,
-            y: baseRot.current.monitorY + oy,
-            z: baseRot.current.monitorZ + oz,
-            duration: 0.15,
-            ease: 'power1.out',
-            overwrite: 'auto'
-          });
+          if (xTo.current && yTo.current && zTo.current) {
+            xTo.current(baseRot.current.monitorX + ox);
+            yTo.current(baseRot.current.monitorY + oy);
+            zTo.current(baseRot.current.monitorZ + oz);
+          } else {
+            gsap.to(monitor.rotation, {
+              x: baseRot.current.monitorX + ox,
+              y: baseRot.current.monitorY + oy,
+              z: baseRot.current.monitorZ + oz,
+              duration: 0.15,
+              ease: 'power1.out',
+              overwrite: 'auto'
+            });
+          }
         } else {
           // Khi trỏ chuột sang phải, monitor quay về hướng trái nhìn vào text và đứng yên
           const theta = 0.820;
@@ -312,23 +327,31 @@ export default function SplineHeroScene() {
           const oz = -pitch * sinT;
           lastHoverOffset.current = { x: ox, y: oy, z: oz };
 
-          gsap.to(monitor.rotation, {
-            x: baseRot.current.monitorX + ox,
-            y: baseRot.current.monitorY + oy,
-            z: baseRot.current.monitorZ + oz,
-            duration: 0.3,   // Mượt mà trượt về vị trí khóa
-            ease: 'power1.out',
-            overwrite: 'auto'
-          });
+          if (xTo.current && yTo.current && zTo.current) {
+            xTo.current(baseRot.current.monitorX + ox);
+            yTo.current(baseRot.current.monitorY + oy);
+            zTo.current(baseRot.current.monitorZ + oz);
+          } else {
+            gsap.to(monitor.rotation, {
+              x: baseRot.current.monitorX + ox,
+              y: baseRot.current.monitorY + oy,
+              z: baseRot.current.monitorZ + oz,
+              duration: 0.3,   // Mượt mà trượt về vị trí khóa
+              ease: 'power1.out',
+              overwrite: 'auto'
+            });
+          }
         }
       }
     });
 
     const handleScroll = contextSafe(() => {
-      const projectsEl = document.getElementById('projects');
-      if (!projectsEl || !containerRef.current) return;
+      // Tìm phần tử section tiếp theo (About Me) làm mốc ẩn mô hình
+      const aboutMeEl = document.getElementById('about-me');
+      if (!aboutMeEl || !containerRef.current) return;
 
-      const rect = projectsEl.getBoundingClientRect();
+      const rect = aboutMeEl.getBoundingClientRect();
+      // Cơ chế: Chỉ ẩn mô hình 3D khi đã cuộn đến 30% chiều cao của section tiếp theo (About Me)
       const threshold = window.innerHeight - (rect.height * 0.3);
 
       const shouldHide = rect.top <= threshold;
@@ -484,6 +507,11 @@ export default function SplineHeroScene() {
       setRotX(monitor.rotation.x);
       setRotY(monitor.rotation.y);
       setRotZ(monitor.rotation.z);
+      
+      // Khởi tạo các hàm quickTo điều khiển góc quay mượt mà với hiệu suất cao nhất
+      xTo.current = gsap.quickTo(monitor.rotation, 'x', { duration: 0.22, ease: 'power1.out' });
+      yTo.current = gsap.quickTo(monitor.rotation, 'y', { duration: 0.22, ease: 'power1.out' });
+      zTo.current = gsap.quickTo(monitor.rotation, 'z', { duration: 0.22, ease: 'power1.out' });
     }
 
     setIsLoaded(true);

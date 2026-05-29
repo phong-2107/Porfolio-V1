@@ -69,3 +69,130 @@
 .portfolio-wordmark {
   color: rgba(248, 250, 252, 0.05);
 }
+
+/* Custom Scrollbar for Modal and scrollable content */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border-glass);
+  border-radius: 999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Bento Card 3D Transform and hardware acceleration styles */
+[data-project-card] {
+  transform-style: preserve-3d;
+  will-change: transform, border-color, box-shadow;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+[data-project-card] .will-change-transform {
+  will-change: transform;
+}
+
+/* Floating content effects for text layers inside card */
+[data-project-card] [style*="transform: translateZ"] {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Download Button Glassmorphism */
+.download-btn-glass {
+  background: var(--surface-glass);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-glass);
+  transition: all 300ms var(--ease-out);
+}
+
+.download-btn-glass:hover {
+  background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-hover));
+  border-color: transparent;
+  color: var(--bg-deep);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-2px);
+}
+
+/* Bento card drawer hardware acceleration and perspective styling */
+[data-project-card] .transition-all {
+  will-change: max-height, opacity, transform;
+}
+
+/* Scroll Down Mouse Indicator */
+.scroll-indicator-mouse {
+  width: 24px;
+  height: 40px;
+  border: 2.2px solid rgba(248, 250, 252, 0.35);
+  border-radius: 99px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6), 
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-indicator-mouse:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 
+    0 0 15px rgba(18, 214, 221, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.scroll-indicator-wheel {
+  width: 4px;
+  height: 8px;
+  background-color: var(--accent-cyan);
+  border-radius: 99px;
+  margin-top: 8px;
+  animation: scroll-wheel-slide 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+@keyframes scroll-wheel-slide {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+    scale: 0.8;
+  }
+  20% {
+    opacity: 1;
+    scale: 1;
+  }
+  60% {
+    transform: translateY(12px);
+    opacity: 0.15;
+    scale: 0.8;
+  }
+  100% {
+    transform: translateY(12px);
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+/* Animated Scanner Laser Bar for Sci-Fi portrait frames */
+@keyframes scanner-slide {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+.animate-scanner-line {
+  animation: scanner-slide 4s linear infinite;
+}
