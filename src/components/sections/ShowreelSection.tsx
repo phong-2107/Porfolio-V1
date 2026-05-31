@@ -141,7 +141,7 @@ export default function ShowreelSection() {
 
           {/* CENTER: Video */}
           <div className="lg:col-span-4 flex justify-center relative z-10 pointer-events-none">
-            <div className="relative w-full max-w-[700px] aspect-square lg:aspect-auto lg:h-[800px] flex items-center justify-center transform-gpu scale-110 lg:scale-[1.35] will-change-transform">
+            <div className="relative w-full max-w-[700px] aspect-square lg:aspect-auto lg:h-[800px] flex items-center justify-center transform-gpu scale-110 lg:scale-[1.35] -translate-x-[7%] will-change-transform">
               <video
                 ref={videoRef}
                 src="/assets/videos/Video-V1_2.webm"

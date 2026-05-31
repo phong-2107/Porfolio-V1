@@ -109,3 +109,21 @@ Nhật ký đầy đủ và chi tiết các công việc đã thực hiện qua 
   - `[x]` Tráo đổi vị trí của `#showreel` và `#about-me` trong danh sách `CHAPTERS` của `StoryChapterHUD.tsx` để khớp hoàn toàn thứ tự hiển thị thực tế trên màn hình.
   - `[x]` Điều chỉnh số thứ tự Kicker từ `// 01.5 / ABOUT ME` thành `// 02.5 / ABOUT ME` trong `AboutMeSection.tsx` để đảm bảo chuỗi đếm liên tiếp.
   - `[x]` Biên dịch dự án thành công bằng `npm run build` để xác minh tính ổn định tuyệt đối.
+
+- `[x]` **Phase 21: Spline Blackhole Suction Motion Upgrade** (Hoạt ảnh Hố đen hút mô hình 3D)
+  - `[x]` Gỡ bỏ hoàn toàn bộ lắng nghe cuộn `window.scroll` thủ công để chuyển sang bộ điều khiển cuộn khai báo ScrollTrigger hiệu suất tối đa.
+  - `[x]` Thiết lập ScrollTrigger tịnh tiến mô hình 3D ra chính giữa màn hình (nơi video showreel hiển thị) khi cuộn vào `#showreel`.
+  - `[x]` Lập trình hiệu ứng Vortex hút: Thu nhỏ tỷ lệ canvas về `scale: 0.02`, xoay tròn `-360` độ xoáy ốc, làm mờ thấu kính `blur(15px)` và mờ đục `opacity: 0`.
+  - `[x]` Tự động tắt hiển thị `display: none` khi hoàn tất lực hút để giải phóng GPU và kích hoạt lại khi cuộn ngược lên.
+  - `[x]` Đồng bộ ẩn/hiện bong bóng thoại `dialogue bubble` chính xác theo từng trạng thái cuộn của Technical Profile và Showreel.
+
+- `[x]` **Phase 22: GitHub Profile URL Synced Update** (Đồng bộ hoá Tài khoản GitHub mới)
+  - `[x]` Tìm kiếm và thay thế toàn bộ địa chỉ URL tài khoản GitHub cũ `github.com/phongdev` sang tài khoản GitHub mới `github.com/NT-Phong` trong [portfolio.ts](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/data/portfolio.ts).
+  - `[x]` Cập nhật liên kết kho lưu trữ (repositories) cho các dự án MangaSmurf, TimTro24h, AWS Infrastructure, và 3D Interactive Portfolio đồng bộ chuẩn xác.
+
+- `[x]` **Phase 23: Career Timeline Tracer Orb Upgrade** (Nâng cấp Quả Cầu Chỉ Báo Dòng Thời Gian Career)
+  - `[x]` Cấu hình lại styles trong `hero.css`: Tạo hiệu ứng quả cầu 3D với radial gradient, viền phản chiếu thủy tinh, và vầng hào quang kép.
+  - `[x]` Thiết lập vòng quay HUD orbit ring nét đứt chuyển động tròn xung quanh quả cầu chỉ báo.
+  - `[x]` Viết CSS đuôi ánh sáng Comet linear-gradient (`::before`) hỗ trợ co giãn và xoay chiều theo trạng thái di chuyển.
+  - `[x]` Cập nhật ScrollTrigger của `.timeline-tracer-dot` trong `Hero.tsx`: Theo dõi vận tốc cuộn để kéo dãn đuôi ánh sáng và tự động đảo chiều đuôi tương ứng hướng cuộn lên/xuống.
+  - `[x]` Biên dịch dự án thành công bằng `npm run build` để kiểm tra độ tin cậy tuyệt đối.

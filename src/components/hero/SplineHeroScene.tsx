@@ -12,8 +12,9 @@ const SHOW_CALIBRATION_PANEL = false; // Đặt thành true nếu cần mở l�
 export default function SplineHeroScene() {
   const spline = useRef<Application | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const suckInRef = useRef<HTMLDivElement>(null); // Thêm ref cho hiệu ứng suck-in
   const scrollState = useRef<'hero' | 'about' | 'past'>('hero');
-  
+
   const baseRot = useRef({
     monitorX: 0,
     monitorY: 0.630,
@@ -75,11 +76,12 @@ export default function SplineHeroScene() {
       // Cân chỉnh lại: Desktop (1.1), Tablet (0.85), Mobile (0.6)
       const currentScale = isMobile ? 0.6 : (isTablet ? 0.85 : 1.1);
       const xOffset = isMobile ? window.innerWidth * 0.02 : (isTablet ? window.innerWidth * 0.25 : window.innerWidth * 0.35);
+      const initialX = window.innerWidth * 0.04; // Đẩy qua phải 10% khi ở Hero
       const yOffset = isMobile ? '12vh' : (isTablet ? '8vh' : '4vh'); // Đẩy mô hình lên một chút để thấy rõ receipt paper
 
       // Thiết lập hiển thị ban đầu ổn định cho container 3D
       gsap.set(containerRef.current, {
-        x: 0,
+        x: initialX,
         scale: currentScale,
         y: yOffset,
         opacity: 1,
@@ -106,7 +108,7 @@ export default function SplineHeroScene() {
 
       if (monitorObj && scene1Obj) {
         // Giai đoạn chuyển tiếp từ Hero sang About (progress 0 -> 0.5)
-        tl.fromTo(baseRot.current, 
+        tl.fromTo(baseRot.current,
           { monitorX: 0, monitorY: 0.630, monitorZ: 0, sceneX: 0, sceneY: -0.340, sceneZ: 0, bodyX: 0, bodyY: 0.630, bodyZ: 0, podiumX: -1.570, podiumY: 0.000, podiumZ: -1.015 },
           { monitorX: 0, monitorY: -0.175, monitorZ: -0.020, sceneX: 0, sceneY: -0.340, sceneZ: 0, bodyX: 0, bodyY: -0.175, bodyZ: -0.020, podiumX: -1.570, podiumY: 0.005, podiumZ: -1.670, ease: "none", duration: 0.5 },
           0
@@ -117,7 +119,7 @@ export default function SplineHeroScene() {
 
       // Di chuyển Container sang phải khi cuộn từ Hero sang About
       tl.fromTo(containerRef.current,
-        { x: 0, y: yOffset, scale: currentScale },
+        { x: initialX, y: yOffset, scale: currentScale },
         { x: xOffset, y: yOffset, scale: currentScale, force3D: true, ease: "none", duration: 0.5 },
         0
       );
@@ -127,6 +129,43 @@ export default function SplineHeroScene() {
         { x: xOffset, y: yOffset, scale: currentScale, force3D: true, ease: "none", duration: 3.0 },
         0.5
       );
+
+      // --- NÂNG CẤP: HIỆU ỨNG HÚT VÀO SHOWREEL ---
+      // Thêm ScrollTrigger độc lập để di chuyển suckInRef bù trừ lại xOffset và tạo animation hút vào
+      const showreelEl = document.getElementById("showreel");
+      if (showreelEl && suckInRef.current) {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: showreelEl,
+            start: "top 85%", // Bắt đầu khi Showreel xuất hiện một chút
+            end: "center center", // Hoàn tất khi video ra giữa màn hình
+            scrub: 1,
+            invalidateOnRefresh: true,
+          }
+        })
+          // Giai đoạn 1: Bay vòng tạo đà nhẹ
+          .to(suckInRef.current, {
+            x: 30,
+            y: 30,
+            rotationZ: 15,
+            scale: 0.85,
+            ease: "power1.out",
+            duration: 0.15
+          }, 0)
+          // Giai đoạn 2: Xoáy mạnh, thu nhỏ và biến mất (Kết thúc sớm hơn)
+          .to(suckInRef.current, {
+            x: -xOffset - (window.innerWidth * 0.15), // Dịch tâm hút qua trái 15% màn hình
+            y: -yOffset, // Điểm neo chính giữa dọc
+            rotationZ: -180, // Lốc xoáy lộn vòng
+            scale: 0,
+            opacity: 0,
+            filter: "blur(10px)",
+            display: "none",
+            ease: "power2.in",
+            duration: 0.4
+          }, 0.15);
+      }
+      // --- END NÂNG CẤP ---
     });
 
     // 2. Cập nhật trạng thái cuộn khi người dùng đi vào/ra phần Technical Profile (About)
@@ -184,7 +223,7 @@ export default function SplineHeroScene() {
 
     const handleWindowHover = contextSafe((e: MouseEvent) => {
       if (!spline.current || calibrationMode) return;
-      
+
       const monitor = spline.current.findObjectByName('Monitor');
       if (!monitor) return;
 
@@ -260,7 +299,7 @@ export default function SplineHeroScene() {
           const theta = 0.820;
           const cosT = Math.cos(theta);
           const sinT = Math.sin(theta);
-          
+
           const yaw = -0.25; // Quay sang trái -0.25 rad
           const pitch = 0;   // Góc nhìn ngang
 
@@ -288,13 +327,13 @@ export default function SplineHeroScene() {
     });
 
     const handleScroll = contextSafe(() => {
-      // Tìm phần tử section tiếp theo (About Me) làm mốc ẩn mô hình
-      const aboutMeEl = document.getElementById('about-me');
-      if (!aboutMeEl || !containerRef.current) return;
+      // Tìm phần tử section tiếp theo (Showreel) làm mốc cập nhật trạng thái past
+      const showreelEl = document.getElementById('showreel');
+      if (!showreelEl || !containerRef.current) return;
 
-      const rect = aboutMeEl.getBoundingClientRect();
-      // Cơ chế: Chỉ ẩn mô hình 3D khi đã cuộn đến 30% chiều cao của section tiếp theo (About Me)
-      const threshold = window.innerHeight - (rect.height * 0.3);
+      const rect = showreelEl.getBoundingClientRect();
+      // Kích hoạt trạng thái past khi Showreel xuất hiện
+      const threshold = window.innerHeight - (rect.height * 0.1);
 
       const shouldHide = rect.top <= threshold;
 
@@ -307,29 +346,13 @@ export default function SplineHeroScene() {
           duration: 0.3,
           overwrite: "auto"
         });
-        gsap.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.4,
-          ease: "power2.out",
-          onComplete: () => {
-            if (scrollState.current === 'past' && containerRef.current) {
-              containerRef.current.style.display = "none";
-            }
-          }
-        });
+        // Không dùng gsap.to(containerRef) ẩn thủ công nữa, nhường cho showreelTl xử lý hút vào
       } else if (!shouldHide && scrollState.current === 'past') {
         const aboutEl = document.getElementById('about');
         const aboutRect = aboutEl ? aboutEl.getBoundingClientRect() : null;
-        
+
         const newState = (aboutRect && aboutRect.top <= 0) ? 'about' : 'hero';
         scrollState.current = newState;
-        
-        containerRef.current.style.display = "block";
-        gsap.to(containerRef.current, {
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.out"
-        });
 
         if (newState === 'about') {
           gsap.fromTo('.spline-dialogue-bubble',
@@ -350,7 +373,7 @@ export default function SplineHeroScene() {
 
     window.addEventListener('mousemove', handleWindowHover);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     // Gọi lập tức để cập nhật trạng thái chuẩn xác khi reload trang
     handleScroll();
 
@@ -439,7 +462,7 @@ export default function SplineHeroScene() {
     if (body) gsap.set(body.rotation, { x: 0, y: 0.630, z: 0 });
     if (podium) gsap.set(podium.rotation, { x: -1.570, y: 0.000, z: -1.015 });
     if (plant) gsap.set(plant.rotation, { x: -0.050, y: 2.295, z: 0.050 });
-    
+
     // Chọn đối tượng Monitor mặc định trong Dropdown
     const defaultObjName = 'Monitor';
     setSelectedObjectName(defaultObjName);
@@ -449,7 +472,7 @@ export default function SplineHeroScene() {
       setRotX(monitor.rotation.x);
       setRotY(monitor.rotation.y);
       setRotZ(monitor.rotation.z);
-      
+
       // Khởi tạo các hàm quickTo điều khiển góc quay mượt mà với hiệu suất cao nhất
       xTo.current = gsap.quickTo(monitor.rotation, 'x', { duration: 0.22, ease: 'power1.out' });
       yTo.current = gsap.quickTo(monitor.rotation, 'y', { duration: 0.22, ease: 'power1.out' });
@@ -467,98 +490,101 @@ export default function SplineHeroScene() {
         className="w-full h-full relative z-[10] pointer-events-auto will-change-transform"
         style={{ transformOrigin: 'center center' }}
       >
-        <Spline
-          scene="https://prod.spline.design/4QDf3qwGtpRrRVFU/scene.splinecode"
-          onLoad={onLoad}
-        />
+        {/* Lớp bọc bên trong để xử lý animation suck-in mà không ảnh hưởng tới global timeline của containerRef */}
+        <div ref={suckInRef} className="w-full h-full relative" style={{ transformOrigin: 'center center' }}>
+          <Spline
+            scene="https://prod.spline.design/4QDf3qwGtpRrRVFU/scene.splinecode"
+            onLoad={onLoad}
+          />
 
-        {/* Bong bóng thoại (Dialogue/Thought Bubble) giới thiệu kỹ năng thân thiện */}
-        <div 
-          className="spline-dialogue-bubble pointer-events-none opacity-0"
-          style={{
-            position: 'absolute',
-            bottom: '72%',         /* neo phía trên màn hình, sát nóc monitor */
-            left: '50%',
-            transform: 'translateX(-50%) scale(0.9)',
-            transformOrigin: 'bottom center',
-            zIndex: 20,
-            width: 'max-content',
-            maxWidth: '220px',
-          }}
-        >
-          <div className="spline-dialogue-bubble-float">
-            {/* Card kính mờ cao cấp */}
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(8,7,6,0.96) 0%, rgba(23,21,18,0.94) 100%)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(var(--accent-cyan-rgb),0.34)',
-              borderRadius: '16px',
-              boxShadow: '0 0 26px rgba(var(--accent-cyan-rgb),0.12), 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(244,239,231,0.06)',
-              padding: '12px 16px 14px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '6px',
-              position: 'relative',
-            }}>
-              {/* Mũi tên trỏ xuống */}
+          {/* Bong bóng thoại (Dialogue/Thought Bubble) giới thiệu kỹ năng thân thiện */}
+          <div
+            className="spline-dialogue-bubble pointer-events-none opacity-0"
+            style={{
+              position: 'absolute',
+              bottom: '72%',         /* neo phía trên màn hình, sát nóc monitor */
+              left: '50%',
+              transform: 'translateX(-50%) scale(0.9)',
+              transformOrigin: 'bottom center',
+              zIndex: 20,
+              width: 'max-content',
+              maxWidth: '220px',
+            }}
+          >
+            <div className="spline-dialogue-bubble-float">
+              {/* Card kính mờ cao cấp */}
               <div style={{
-                position: 'absolute',
-                bottom: '-7px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '14px',
-                height: '14px',
-                background: 'linear-gradient(135deg, rgba(23,21,18,0.94), rgba(23,21,18,0.94))',
+                background: 'linear-gradient(135deg, rgba(8,7,6,0.96) 0%, rgba(23,21,18,0.94) 100%)',
+                backdropFilter: 'blur(16px)',
                 border: '1px solid rgba(var(--accent-cyan-rgb),0.34)',
-                borderTop: 'none',
-                borderLeft: 'none',
-                rotate: '45deg',
-              }} />
+                borderRadius: '16px',
+                boxShadow: '0 0 26px rgba(var(--accent-cyan-rgb),0.12), 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(244,239,231,0.06)',
+                padding: '12px 16px 14px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '6px',
+                position: 'relative',
+              }}>
+                {/* Mũi tên trỏ xuống */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '-7px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '14px',
+                  height: '14px',
+                  background: 'linear-gradient(135deg, rgba(23,21,18,0.94), rgba(23,21,18,0.94))',
+                  border: '1px solid rgba(var(--accent-cyan-rgb),0.34)',
+                  borderTop: 'none',
+                  borderLeft: 'none',
+                  rotate: '45deg',
+                }} />
 
-              {/* Label */}
-              <span style={{
-                fontSize: '9px',
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: 'var(--accent-orange)',
-                lineHeight: 1,
-              }}>MY SKILLS</span>
+                {/* Label */}
+                <span style={{
+                  fontSize: '9px',
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--accent-orange)',
+                  lineHeight: 1,
+                }}>MY SKILLS</span>
 
-              {/* Nội dung chính */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', margin: '2px 0' }}>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--accent-orange)', flexShrink: 0 }}>
-                  <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4Z" />
-                </svg>
-                <p style={{
-                  fontSize: '11px',
-                  color: 'var(--text-primary)',
-                  lineHeight: '1.4',
-                  fontWeight: 500,
-                  textAlign: 'center',
-                  margin: 0,
-                }}>
-                  Đây là những kỹ năng<br/>chuyên môn của tôi.
-                </p>
-              </div>
+                {/* Nội dung chính */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', margin: '2px 0' }}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--accent-orange)', flexShrink: 0 }}>
+                    <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4Z" />
+                  </svg>
+                  <p style={{
+                    fontSize: '11px',
+                    color: 'var(--text-primary)',
+                    lineHeight: '1.4',
+                    fontWeight: 500,
+                    textAlign: 'center',
+                    margin: 0,
+                  }}>
+                    Đây là những kỹ năng<br />chuyên môn của tôi.
+                  </p>
+                </div>
 
-              {/* Mini tech tags */}
-              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2px' }}>
-                {['C#', 'React', 'Node'].map(tag => (
-                  <span key={tag} style={{
-                    fontSize: '8px',
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    background: 'rgba(var(--accent-cyan-rgb),0.10)',
-                    border: '1px solid rgba(var(--accent-cyan-rgb),0.24)',
-                    color: 'var(--accent-cyan)',
-                    letterSpacing: '0.05em',
-                  }}>{tag}</span>
-                ))}
+                {/* Mini tech tags */}
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2px' }}>
+                  {['C#', 'React', 'Node'].map(tag => (
+                    <span key={tag} style={{
+                      fontSize: '8px',
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      background: 'rgba(var(--accent-cyan-rgb),0.10)',
+                      border: '1px solid rgba(var(--accent-cyan-rgb),0.24)',
+                      color: 'var(--accent-cyan)',
+                      letterSpacing: '0.05em',
+                    }}>{tag}</span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -585,15 +611,15 @@ export default function SplineHeroScene() {
 
       {/* Bảng cân chỉnh góc xoay mô hình 3D sử dụng Portal để đưa ra ngoài stacking context */}
       {SHOW_CALIBRATION_PANEL && isLoaded && typeof document !== 'undefined' && createPortal(
-        <div 
+        <div
           className="fixed bottom-12 left-6 z-[99999] p-4 bg-bg-surface/90 backdrop-blur-md border border-accent-cyan/30 rounded-xl text-text-secondary font-mono text-[11px] w-[310px] pointer-events-auto flex flex-col gap-3 shadow-lg select-none"
           style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
         >
           <div className="flex items-center justify-between border-b border-accent-cyan/20 pb-2">
             <span className="text-accent-cyan font-bold tracking-widest uppercase">3D CALIBRATION PANEL</span>
             <label className="flex items-center gap-1.5 cursor-pointer">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 checked={calibrationMode}
                 onChange={(e) => setCalibrationMode(e.target.checked)}
                 className="accent-accent-orange"
@@ -621,12 +647,12 @@ export default function SplineHeroScene() {
                 <span>Rotation X (Pitch):</span>
                 <span className="text-white font-bold">{rotX.toFixed(3)} rad</span>
               </div>
-              <input 
-                type="range" 
-                min="-3.14" 
-                max="3.14" 
+              <input
+                type="range"
+                min="-3.14"
+                max="3.14"
                 step="0.005"
-                value={rotX} 
+                value={rotX}
                 disabled={!calibrationMode}
                 onChange={(e) => setRotX(parseFloat(e.target.value))}
                 className="w-full accent-accent-cyan"
@@ -638,12 +664,12 @@ export default function SplineHeroScene() {
                 <span>Rotation Y (Yaw):</span>
                 <span className="text-white font-bold">{rotY.toFixed(3)} rad</span>
               </div>
-              <input 
-                type="range" 
-                min="-3.14" 
-                max="3.14" 
+              <input
+                type="range"
+                min="-3.14"
+                max="3.14"
                 step="0.005"
-                value={rotY} 
+                value={rotY}
                 disabled={!calibrationMode}
                 onChange={(e) => setRotY(parseFloat(e.target.value))}
                 className="w-full accent-accent-cyan"
@@ -655,12 +681,12 @@ export default function SplineHeroScene() {
                 <span>Rotation Z (Roll):</span>
                 <span className="text-white font-bold">{rotZ.toFixed(3)} rad</span>
               </div>
-              <input 
-                type="range" 
-                min="-3.14" 
-                max="3.14" 
+              <input
+                type="range"
+                min="-3.14"
+                max="3.14"
                 step="0.005"
-                value={rotZ} 
+                value={rotZ}
                 disabled={!calibrationMode}
                 onChange={(e) => setRotZ(parseFloat(e.target.value))}
                 className="w-full accent-accent-cyan"

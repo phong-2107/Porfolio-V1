@@ -349,6 +349,23 @@ export default function Hero() {
           end: 'bottom 60%',
           scrub: true,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const velocity = Math.abs(self.getVelocity());
+            const direction = self.direction; // 1 = scrolling down, -1 = scrolling up
+            const dot = document.querySelector('.timeline-tracer-dot');
+            if (dot) {
+              if (direction === 1) {
+                dot.classList.add('is-scrolling-down');
+                dot.classList.remove('is-scrolling-up');
+              } else if (direction === -1) {
+                dot.classList.add('is-scrolling-up');
+                dot.classList.remove('is-scrolling-down');
+              }
+              // Map velocity to stretch (cap at 2.0x for clean aesthetics)
+              const stretch = Math.min(2.0, 1.0 + velocity * 0.0004);
+              (dot as HTMLElement).style.setProperty('--tail-stretch', stretch.toString());
+            }
+          }
         }
       });
       gsap.utils.toArray('.career-item').forEach((item: any) => {
