@@ -175,7 +175,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
   return (
     <div
       ref={containerRef}
-      className={`group relative p-1.5 rounded-[2.5rem] border border-white/[0.04] bg-white/[0.01] transition-all duration-500 cursor-pointer select-none overflow-hidden ${layoutClasses}`}
+      className={`group relative rounded-[2rem] border border-[color:var(--border-subtle)] hover:border-[color:var(--border-strong)]/60 bg-[color:var(--bg-surface)]/20 transition-all duration-500 cursor-pointer select-none overflow-hidden ${layoutClasses}`}
       style={{
         perspective: '1200px',
         transformStyle: 'preserve-3d',
@@ -184,19 +184,16 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
       data-project-card
       onClick={onExplore}
     >
-      {/* Lớp lõi trong (Inner Core Bezel Enclosure) */}
-      <div className="relative w-full h-full rounded-[calc(2.5rem-0.375rem)] overflow-hidden border border-white/[0.05] bg-[color:var(--bg-surface)]/20 transition-all duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-        
-        {/* Lớp viền sáng tinh tế xuất hiện khi hover */}
-        <div 
-          className="absolute inset-0 z-30 rounded-[calc(2.5rem-0.375rem)] border border-transparent transition-all duration-500 pointer-events-none group-hover:border-white/10"
-          style={{
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
-          }}
-        />
+      {/* Lớp viền sáng tinh tế xuất hiện khi hover */}
+      <div 
+        className="absolute inset-0 z-30 rounded-[2rem] border border-transparent transition-all duration-500 pointer-events-none group-hover:border-[color:var(--border-orange)]/40"
+        style={{
+          boxShadow: 'inset 0 1px 0 rgba(244, 239, 231, 0.04)',
+        }}
+      />
 
-        {/* ── Background Media: Blurred Backdrop Mirror + Foreground Contain ── */}
-        <div className="absolute inset-0 z-0 overflow-hidden rounded-[calc(2.5rem-0.375rem)]">
+      {/* ── Background Media: Blurred Backdrop Mirror + Foreground Contain ── */}
+      <div className="absolute inset-0 z-0 overflow-hidden rounded-[2rem]">
         {/* 1. Blurred Backdrop (Glow Ambient) - Tối ưu hoá chỉ dùng ảnh tĩnh */}
         <div className="absolute inset-0 filter blur-3xl opacity-35 scale-110 pointer-events-none z-0">
           <img
@@ -211,7 +208,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
           ref={mediaRef} 
           className={`absolute inset-0 w-full h-[116%] -top-[8%] z-10 flex items-center justify-center will-change-transform ${mediaPaddingClasses}`}
         >
-          <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/5 shadow-2xl">
+          <div className="relative w-full h-full rounded-2xl overflow-hidden border border-[color:var(--border-subtle)] shadow-2xl">
             {/* Fallback Cover Image */}
             <img
               src={project.image}
@@ -240,7 +237,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
         </div>
         
         {/* Lớp lưới kỹ thuật ảo ảnh mờ */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-20" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(244,239,231,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(244,239,231,0.012)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-20" />
       </div>
 
       {/* ── Top Row: Tag phân loại & Thời hạn (Cố định góc trên) ── */}
@@ -251,9 +248,9 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
         <span 
           className="rounded-full border px-3.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] font-mono transition-all duration-300 group-hover:border-current"
           style={{
-            borderColor: isOrange ? 'rgba(255,122,26,0.3)' : 'rgba(18,214,221,0.3)',
+            borderColor: isOrange ? 'rgba(198,107,61,0.3)' : 'rgba(79,166,154,0.3)',
             color: accentVar,
-            backgroundColor: isOrange ? 'rgba(255,122,26,0.05)' : 'rgba(18,214,221,0.05)',
+            backgroundColor: isOrange ? 'rgba(198,107,61,0.05)' : 'rgba(79,166,154,0.05)',
           }}
         >
           {project.tag}
@@ -267,7 +264,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
       <div 
         className="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-20 flex flex-col justify-end pt-36 rounded-b-[2rem]"
         style={{
-          background: 'linear-gradient(to top, rgba(2,4,6,0.98) 0%, rgba(2,4,6,0.85) 45%, rgba(2,4,6,0.2) 75%, rgba(2,4,6,0) 100%)',
+          background: 'linear-gradient(to top, rgba(8,7,6,0.98) 0%, rgba(8,7,6,0.85) 45%, rgba(8,7,6,0.2) 75%, rgba(8,7,6,0) 100%)',
           transformStyle: 'preserve-3d',
           transform: 'translateZ(30px)',
         }}
@@ -282,7 +279,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
             <ScrambleText text={project.subtitle} />
           </span>
           {/* Kiểu chữ Instrument Serif nghệ thuật & bay bổng */}
-          <h3 className="font-serif italic font-medium text-4xl text-white leading-[1.1] tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+          <h3 className="font-serif italic font-medium text-4xl text-[color:var(--text-primary)] leading-[1.1] tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
             {project.name}
           </h3>
         </div>
@@ -306,14 +303,14 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
           </ul>
 
           {/* Danh mục công nghệ & Nút bấm */}
-          <div className="flex flex-col gap-4 mt-5 pt-4 border-t border-white/5">
+          <div className="flex flex-col gap-4 mt-5 pt-4 border-t border-[color:var(--border-subtle)]">
             {/* Tech Badges */}
             <div className="flex flex-wrap gap-1">
               {project.stack.slice(0, 4).map((s) => (
                 <SkillBadge key={s} label={s} accent={project.accent as 'cyan' | 'orange'} />
               ))}
               {project.stack.length > 4 && (
-                <span className="rounded-full border border-white/5 bg-white/[0.01] px-2 py-0.5 text-[8px] font-bold text-[color:var(--text-secondary)] font-mono">
+                <span className="rounded-full border border-[color:var(--border-subtle)] bg-white/[0.01] px-2 py-0.5 text-[8px] font-bold text-[color:var(--text-secondary)] font-mono">
                   +{project.stack.length - 4}
                 </span>
               )}
@@ -329,7 +326,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
                   e.stopPropagation();
                   playClickSound();
                 }}
-                className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-secondary)] hover:text-white transition-colors font-mono"
+                className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)] transition-colors font-mono"
               >
                 <Github size={11} />
                 <span>Source</span>
@@ -341,7 +338,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
                   playClickSound();
                   onExplore();
                 }}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black cursor-pointer font-mono"
+                className="flex items-center gap-1.5 rounded-full border border-[color:var(--border-glass)] px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-primary)] transition-all hover:bg-[color:var(--accent-orange)] hover:text-[color:var(--bg-deep)] hover:border-transparent cursor-pointer font-mono shadow-[var(--shadow-glass)]"
               >
                 <span>Explore</span>
                 <ArrowUpRight size={11} />
@@ -350,7 +347,6 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
           </div>
 
         </div>
-      </div>
       </div>
     </div>
   );

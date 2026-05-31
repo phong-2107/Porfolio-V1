@@ -77,8 +77,8 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
   const isOrange = activeProject?.accent === 'orange';
   const accentColor = isOrange ? 'var(--accent-orange)' : 'var(--accent-cyan)';
   const glowShadow = isOrange 
-    ? '0 0 30px rgba(255, 122, 26, 0.15)' 
-    : '0 0 30px rgba(18, 214, 221, 0.15)';
+    ? '0 0 30px rgba(198, 107, 61, 0.15)' 
+    : '0 0 30px rgba(79, 166, 154, 0.15)';
 
   return createPortal(
     <AnimatePresence>
@@ -86,7 +86,7 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 overflow-y-auto">
           {/* Overlay nền mờ tối dần */}
           <motion.div
-            className="fixed inset-0 bg-black/85 backdrop-blur-xl"
+            className="fixed inset-0 bg-black/90 backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
 
           {/* Modal Container */}
           <motion.div
-            className="relative w-full max-w-6xl rounded-3xl border border-[color:var(--border-glass)] bg-[color:var(--bg-base)] overflow-hidden shadow-2xl z-10 flex flex-col lg:flex-row h-full max-h-[90vh] md:max-h-[85vh]"
+            className="relative w-[94vw] max-w-[1920px] rounded-3xl border border-[color:var(--border-glass)] bg-[color:var(--bg-base)] overflow-hidden shadow-2xl z-10 flex flex-col lg:flex-row h-full max-h-[90vh] md:max-h-[85vh]"
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -122,8 +122,8 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                       onClick={() => { playClickSound(); setActiveTab('live'); }}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-[10px] font-bold uppercase tracking-wider transition-all ${
                         activeTab === 'live'
-                          ? 'bg-[rgba(18,214,221,0.1)] text-[color:var(--accent-cyan)] border border-[color:var(--border-cyan)]'
-                          : 'text-[color:var(--text-secondary)] hover:text-white border border-transparent'
+                          ? 'bg-[rgba(79,166,154,0.1)] text-[color:var(--accent-cyan)] border border-[color:var(--border-cyan)]'
+                          : 'text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)] border border-transparent'
                       }`}
                     >
                       <Globe size={12} />
@@ -135,8 +135,8 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                       onClick={() => { playClickSound(); setActiveTab('video'); }}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-[10px] font-bold uppercase tracking-wider transition-all ${
                         activeTab === 'video'
-                          ? 'bg-[rgba(255,122,26,0.1)] text-[color:var(--accent-orange)] border border-[color:var(--border-orange)]'
-                          : 'text-[color:var(--text-secondary)] hover:text-white border border-transparent'
+                          ? 'bg-[rgba(198,107,61,0.1)] text-[color:var(--accent-orange)] border border-[color:var(--border-orange)]'
+                          : 'text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)] border border-transparent'
                       }`}
                     >
                       <Film size={12} />
@@ -147,10 +147,10 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                     onClick={() => { playClickSound(); setActiveTab('mockup'); }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-[10px] font-bold uppercase tracking-wider transition-all ${
                       activeTab === 'mockup' && !activeProject.demoUrl && !activeProject.videoUrl
-                        ? 'bg-white/10 text-white border border-white/20'
+                        ? 'bg-[color:var(--bg-surface-hover)] text-[color:var(--text-primary)] border border-[color:var(--border-strong)]'
                         : activeTab === 'mockup'
-                        ? 'bg-white/5 text-white border border-white/10'
-                        : 'text-[color:var(--text-secondary)] hover:text-white border border-transparent'
+                        ? 'bg-[color:var(--bg-surface)] text-[color:var(--text-primary)] border border-[color:var(--border-subtle)]'
+                        : 'text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)] border border-transparent'
                     }`}
                   >
                     Mockup
@@ -207,10 +207,10 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                     
                     {/* Sandbox Warning/Tip if no live demo is available */}
                     {!activeProject.demoUrl && (
-                      <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl border border-yellow-500/20 bg-yellow-500/5 backdrop-blur-md flex items-start gap-3">
-                        <AlertCircle className="text-yellow-500 shrink-0 mt-0.5" size={16} />
+                      <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl border border-[color:var(--accent-brass)]/20 bg-[color:var(--accent-brass)]/5 backdrop-blur-md flex items-start gap-3">
+                        <AlertCircle className="text-[color:var(--accent-brass)] shrink-0 mt-0.5" size={16} />
                         <div className="flex-1">
-                          <h4 className="font-mono text-[10px] font-bold text-yellow-500 uppercase tracking-wider">Local/Intranet environment</h4>
+                          <h4 className="font-mono text-[10px] font-bold text-[color:var(--accent-brass)] uppercase tracking-wider">Local/Intranet environment</h4>
                           <p className="text-[11px] text-[color:var(--text-secondary)] mt-0.5 leading-relaxed">
                             This project is hosted on private or secure local intranet networks. View code and configurations below.
                           </p>
@@ -246,14 +246,14 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                   <span 
                     className="rounded-full border px-3 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] font-mono"
                     style={{
-                      borderColor: isOrange ? 'rgba(255,122,26,0.3)' : 'rgba(18,214,221,0.3)',
+                      borderColor: isOrange ? 'rgba(198,107,61,0.3)' : 'rgba(79,166,154,0.3)',
                       color: accentColor,
-                      backgroundColor: isOrange ? 'rgba(255,122,26,0.06)' : 'rgba(18,214,221,0.06)',
+                      backgroundColor: isOrange ? 'rgba(198,107,61,0.06)' : 'rgba(79,166,154,0.06)',
                     }}
                   >
                     {activeProject.tag}
                   </span>
-                  <h3 className="font-display text-3xl font-black text-white tracking-tight mt-3 leading-tight">
+                  <h3 className="font-display text-3xl font-black text-[color:var(--text-primary)] tracking-tight mt-3 leading-tight">
                     {activeProject.name}
                   </h3>
                   <p className="text-xs font-mono uppercase tracking-widest text-[color:var(--text-secondary)] mt-1.5">
@@ -307,7 +307,7 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                     {activeProject.stack.map((s) => (
                       <span
                         key={s}
-                        className="rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-[color:var(--text-secondary)] font-mono hover:border-white/10 hover:text-white transition-colors"
+                        className="rounded-full border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-[color:var(--text-secondary)] font-mono hover:border-[color:var(--border-strong)] hover:text-[color:var(--text-primary)] transition-colors"
                       >
                         {s}
                       </span>
@@ -324,7 +324,7 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => playClickSound()}
-                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10 hover:border-white/20 transition-all font-mono"
+                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[color:var(--surface-glass)] border border-[color:var(--border-glass)] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[color:var(--text-primary)] hover:bg-[color:var(--bg-surface-hover)] transition-all font-mono shadow-[var(--shadow-glass)]"
                   >
                     <Github size={14} />
                     View Code
@@ -335,7 +335,7 @@ export default function ProjectDemoModal({ project, isOpen, onClose }: ProjectDe
                       target="_blank"
                       rel="noreferrer"
                       onClick={() => playClickSound()}
-                      className="flex-1 flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-wider text-black hover:opacity-90 transition-all font-mono"
+                      className="flex-1 flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-wider text-[color:var(--bg-deep)] hover:opacity-90 transition-all font-mono"
                       style={{ backgroundColor: accentColor }}
                     >
                       <ExternalLink size={14} />

@@ -11,6 +11,7 @@ import { useLoading } from '../hooks/useLoading';
 import HeroIntroSection from './sections/HeroIntroSection';
 import TechnicalProfileSection from './sections/TechnicalProfileSection';
 import AboutMeSection from './sections/AboutMeSection';
+import ShowreelSection from './sections/ShowreelSection';
 import ProjectsSection from './sections/ProjectsSection';
 import CareerSection from './sections/CareerSection';
 import ContactSection from './sections/ContactSection';
@@ -85,15 +86,15 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       // ── Background Glow Color Shifting (Storytelling Colors) ──
       if (isDesktop) {
-        // Technical Profile (#about): Cyan-Teal
+        // Technical Profile (#about): Mineral Teal
         ScrollTrigger.create({
           trigger: '#about',
           start: 'top 60%',
           end: 'bottom 60%',
           onEnter: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(27, 170, 160, 0.32)',
-              '--glow-color-2': 'rgba(27, 170, 160, 0.08)',
+              '--glow-color-1': 'rgba(79, 166, 154, 0.22)',
+              '--glow-color-2': 'rgba(79, 166, 154, 0.06)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -101,8 +102,8 @@ export default function Hero() {
           },
           onLeaveBack: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(59, 130, 246, 0.28)',
-              '--glow-color-2': 'rgba(18, 214, 221, 0.10)',
+              '--glow-color-1': 'rgba(198, 107, 61, 0.20)',
+              '--glow-color-2': 'rgba(79, 166, 154, 0.06)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -110,15 +111,15 @@ export default function Hero() {
           }
         });
 
-        // Career (#career): Terracotta Orange
+        // Career (#career): Aged Copper
         ScrollTrigger.create({
           trigger: '#career',
           start: 'top 60%',
           end: 'bottom 60%',
           onEnter: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(229, 84, 25, 0.32)',
-              '--glow-color-2': 'rgba(229, 84, 25, 0.08)',
+              '--glow-color-1': 'rgba(198, 107, 61, 0.24)',
+              '--glow-color-2': 'rgba(198, 107, 61, 0.07)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -126,8 +127,8 @@ export default function Hero() {
           },
           onLeaveBack: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(27, 170, 160, 0.32)',
-              '--glow-color-2': 'rgba(27, 170, 160, 0.08)',
+              '--glow-color-1': 'rgba(79, 166, 154, 0.22)',
+              '--glow-color-2': 'rgba(79, 166, 154, 0.06)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -135,15 +136,15 @@ export default function Hero() {
           }
         });
 
-        // Projects (#projects): Cyan-Teal
+        // Projects (#projects): Olive Smoke / Mineral Teal
         ScrollTrigger.create({
           trigger: '#projects',
           start: 'top 60%',
           end: 'bottom 60%',
           onEnter: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(27, 170, 160, 0.32)',
-              '--glow-color-2': 'rgba(27, 170, 160, 0.08)',
+              '--glow-color-1': 'rgba(121, 133, 107, 0.20)',
+              '--glow-color-2': 'rgba(79, 166, 154, 0.05)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -151,8 +152,33 @@ export default function Hero() {
           },
           onLeaveBack: () => {
             gsap.to('.bg-halo-glow', {
-              '--glow-color-1': 'rgba(229, 84, 25, 0.32)',
-              '--glow-color-2': 'rgba(229, 84, 25, 0.08)',
+              '--glow-color-1': 'rgba(198, 107, 61, 0.24)',
+              '--glow-color-2': 'rgba(198, 107, 61, 0.07)',
+              duration: 1.5,
+              ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          }
+        });
+
+        // Contact (#contact): Dull Brass / Aged Copper
+        ScrollTrigger.create({
+          trigger: '#contact',
+          start: 'top 60%',
+          end: 'bottom 60%',
+          onEnter: () => {
+            gsap.to('.bg-halo-glow', {
+              '--glow-color-1': 'rgba(184, 155, 98, 0.18)',
+              '--glow-color-2': 'rgba(198, 107, 61, 0.05)',
+              duration: 1.5,
+              ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to('.bg-halo-glow', {
+              '--glow-color-1': 'rgba(121, 133, 107, 0.20)',
+              '--glow-color-2': 'rgba(79, 166, 154, 0.05)',
               duration: 1.5,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -211,41 +237,7 @@ export default function Hero() {
         });
       });
 
-      // ── Cinematic Camera-Focus Transitions between Sections ──
-      if (isDesktop) {
-        const sectionsToFocus = ['#about', '#about-me', '#career', '#projects', '#contact'];
-        sectionsToFocus.forEach((secId) => {
-          const sec = document.querySelector(secId);
-          if (!sec) return;
-          const inner = sec.querySelector(':scope > div');
-          if (!inner) return;
 
-          // Set initial transition state (subtle scaled down, soft blur, invisible)
-          gsap.set(inner, { scale: 0.99, filter: 'blur(2px)', opacity: 0 });
-
-          // Animates lens focus and scale in sync with scroll progress
-          gsap.to(inner, {
-            scale: 1,
-            filter: 'blur(0px)',
-            opacity: 1,
-            ease: 'power1.out',
-            scrollTrigger: {
-              trigger: sec,
-              start: 'top 95%', // Starts immediately when entering screen
-              end: 'top 75%',   // Finishes early so it is sharp when reading
-              scrub: 0.8, // Soft follow momentum
-              onLeave: () => {
-                // Clear hardware-intensive props once section is fully in view to preserve performance
-                gsap.set(inner, { clearProps: 'filter,scale' });
-              },
-              onEnterBack: () => {
-                // Re-apply states if user scrolls back up so it can scrub blur/scale again
-                gsap.set(inner, { scale: 1, filter: 'blur(0px)', opacity: 1 });
-              }
-            }
-          });
-        });
-      }
 
       // ── Section 2 (About / My Stack) ──
       if (isDesktop) {
@@ -273,6 +265,58 @@ export default function Hero() {
           scrollTrigger: { trigger: '#about', start: 'top 75%' }
         });
       }
+
+      // ── Section 2.5 (About Me / BIO_DATA) ──
+      const aboutMeTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#about-me',
+          start: 'top 82%',
+          end: 'bottom 20%',
+          toggleActions: 'play reverse play reverse'
+        }
+      });
+      aboutMeTl
+        // 1. Reveal kicker with letter-spacing expand
+        .fromTo('#about-me .about-kicker',
+          { opacity: 0, x: -30, letterSpacing: '0.4em' },
+          { opacity: 1, x: 0, letterSpacing: '0.25em', duration: 0.9, ease: 'power3.out' }
+        )
+        // 2. 3D pop & slide of avatar card
+        .fromTo('#about-me .about-avatar-card', 
+          { x: -100, rotateY: -20, rotateX: 5, z: -80, opacity: 0, filter: 'blur(10px)' },
+          { x: 0, rotateY: 0, rotateX: 0, z: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out' },
+          '-=0.7'
+        )
+        // 3. Staggered cinematic word-by-word reveal (using custom split-text spans)
+        .fromTo('#about-me .about-reveal-word',
+          { yPercent: 110, rotate: 2, opacity: 0 },
+          { yPercent: 0, rotate: 0, opacity: 1, duration: 0.75, stagger: 0.025, ease: 'power3.out' },
+          '-=0.9'
+        )
+        // 4. Slide up the description text
+        .fromTo('#about-me .about-desc',
+          { y: 30, opacity: 0, filter: 'blur(4px)' },
+          { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out' },
+          '-=0.6'
+        )
+        // 5. Staggered pop of micro-bento metrics grid panels (using elastic/back ease)
+        .fromTo('#about-me .about-metric-card',
+          { scale: 0.88, y: 30, opacity: 0, filter: 'blur(4px)' },
+          { scale: 1, y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, stagger: 0.08, ease: 'back.out(1.4)' },
+          '-=0.6'
+        )
+        // 6. Staggered float-up of vertical social icons
+        .fromTo('#about-me .about-socials > *', 
+          { y: 25, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: 'power3.out' },
+          '-=0.8'
+        )
+        // 7. Glass orb reveal
+        .fromTo('#about-me .about-orb', 
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: 'elastic.out(1, 0.6)' },
+          '-=1.2'
+        );
 
       // ── Section 3 (Projects) ──
       gsap.fromTo('#projects [data-reveal-title]',
@@ -343,6 +387,54 @@ export default function Hero() {
         gsap.from('#contact [data-reveal-certifications]', { x: -40, opacity: 0, ease: 'power3.out', scrollTrigger: { trigger: '#contact', start: 'top 75%' } });
         gsap.from('#contact [data-reveal-contact]', { x: 40, opacity: 0, ease: 'power3.out', scrollTrigger: { trigger: '#contact', start: 'top 70%' } });
       }
+
+      // ── Cinematic Camera-Focus Transitions between Sections ──
+      const sectionsToFocus = ['#about', '#about-me', '#showreel', '#career', '#projects', '#contact'];
+      sectionsToFocus.forEach((secId) => {
+        const sec = document.querySelector(secId);
+        if (!sec) return;
+        const inner = sec.querySelector('.section-focal-wrapper');
+        if (!inner) return;
+
+        // Apply hardware acceleration class dynamically
+        inner.classList.add('gpu-accelerated-focus');
+
+        // Set responsive initial transition state (scaled down on mobile to preserve frame rates)
+        const initialY = isDesktop ? 120 : 50;
+        const initialScale = isDesktop ? 0.88 : 0.95;
+        const initialBlur = isDesktop ? 'blur(16px)' : 'blur(4px)';
+
+        gsap.set(inner, { 
+          y: initialY,
+          scale: initialScale, 
+          filter: initialBlur, 
+          opacity: 0,
+          transformOrigin: 'top center'
+        });
+
+        // Animates lens focus and scale in sync with scroll progress
+        gsap.to(inner, {
+          y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
+          opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sec,
+            start: isDesktop ? 'top 90%' : 'top 95%', // Starts early as section enters screen
+            end: isDesktop ? 'top 55%' : 'top 70%',   // Resolves mid-screen for maximum readability
+            scrub: 0.8,       // Generous fluid momentum
+            onLeave: () => {
+              // Clear hardware-intensive props once section is fully in view to preserve performance
+              gsap.set(inner, { clearProps: 'filter,scale,y' });
+            },
+            onEnterBack: () => {
+              // Re-apply states if user scrolls back up so it can scrub blur/scale again
+              gsap.set(inner, { scale: 1, filter: 'blur(0px)', opacity: 1, y: 0 });
+            }
+          }
+        });
+      });
     });
 
     return () => {
@@ -379,8 +471,8 @@ export default function Hero() {
           <div 
             className="bg-halo-glow w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full blur-[160px]"
             style={{
-              ['--glow-color-1' as any]: 'rgba(59, 130, 246, 0.28)',
-              ['--glow-color-2' as any]: 'rgba(18, 214, 221, 0.10)',
+              ['--glow-color-1' as any]: 'rgba(198, 107, 61, 0.20)',
+              ['--glow-color-2' as any]: 'rgba(79, 166, 154, 0.06)',
               background: 'radial-gradient(circle, var(--glow-color-1) 0%, var(--glow-color-2) 50%, transparent 100%)',
               mixBlendMode: 'screen' as any
             }}
@@ -412,6 +504,7 @@ export default function Hero() {
       <HeroIntroSection />
       <TechnicalProfileSection />
       <AboutMeSection />
+      <ShowreelSection />
       <CareerSection />
       <ProjectsSection />
       <ContactSection />

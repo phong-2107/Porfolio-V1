@@ -10,9 +10,10 @@ const CHAPTERS = [
   { id: 'hero', title: 'SYS_INIT', num: '01' },
   { id: 'about', title: 'TECH_SPEC', num: '02' },
   { id: 'about-me', title: 'BIO_DATA', num: '03' },
-  { id: 'career', title: 'LOG_BOOK', num: '04' },
-  { id: 'projects', title: 'EXP_WORK', num: '05' },
-  { id: 'contact', title: 'COM_LINK', num: '06' }
+  { id: 'showreel', title: 'VIS_WORK', num: '04' },
+  { id: 'career', title: 'LOG_BOOK', num: '05' },
+  { id: 'projects', title: 'EXP_WORK', num: '06' },
+  { id: 'contact', title: 'COM_LINK', num: '07' }
 ];
 
 export default function StoryChapterHUD() {

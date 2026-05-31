@@ -547,11 +547,11 @@ export default function SplineHeroScene() {
           <div className="spline-dialogue-bubble-float">
             {/* Card kính mờ cao cấp */}
             <div style={{
-              background: 'linear-gradient(135deg, rgba(11,10,9,0.96) 0%, rgba(21,20,18,0.94) 100%)',
+              background: 'linear-gradient(135deg, rgba(8,7,6,0.96) 0%, rgba(23,21,18,0.94) 100%)',
               backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(27,170,160,0.5)',
+              border: '1px solid rgba(var(--accent-cyan-rgb),0.34)',
               borderRadius: '16px',
-              boxShadow: '0 0 30px rgba(27,170,160,0.2), 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
+              boxShadow: '0 0 26px rgba(var(--accent-cyan-rgb),0.12), 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(244,239,231,0.06)',
               padding: '12px 16px 14px',
               display: 'flex',
               flexDirection: 'column',
@@ -567,8 +567,8 @@ export default function SplineHeroScene() {
                 transform: 'translateX(-50%)',
                 width: '14px',
                 height: '14px',
-                background: 'linear-gradient(135deg, rgba(21,20,18,0.94), rgba(21,20,18,0.94))',
-                border: '1px solid rgba(27,170,160,0.5)',
+                background: 'linear-gradient(135deg, rgba(23,21,18,0.94), rgba(23,21,18,0.94))',
+                border: '1px solid rgba(var(--accent-cyan-rgb),0.34)',
                 borderTop: 'none',
                 borderLeft: 'none',
                 rotate: '45deg',
@@ -586,16 +586,21 @@ export default function SplineHeroScene() {
               }}>MY SKILLS</span>
 
               {/* Nội dung chính */}
-              <p style={{
-                fontSize: '11px',
-                color: 'var(--text-primary)',
-                lineHeight: '1.5',
-                fontWeight: 500,
-                textAlign: 'center',
-                margin: 0,
-              }}>
-                Đây là những kỹ năng<br/>của tôi đó! 😎⚡
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', margin: '2px 0' }}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--accent-orange)', flexShrink: 0 }}>
+                  <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4Z" />
+                </svg>
+                <p style={{
+                  fontSize: '11px',
+                  color: 'var(--text-primary)',
+                  lineHeight: '1.4',
+                  fontWeight: 500,
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                  Đây là những kỹ năng<br/>chuyên môn của tôi.
+                </p>
+              </div>
 
               {/* Mini tech tags */}
               <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2px' }}>
@@ -606,8 +611,8 @@ export default function SplineHeroScene() {
                     fontWeight: 700,
                     padding: '2px 6px',
                     borderRadius: '4px',
-                    background: 'rgba(var(--accent-cyan-rgb),0.12)',
-                    border: '1px solid rgba(var(--accent-cyan-rgb),0.3)',
+                    background: 'rgba(var(--accent-cyan-rgb),0.10)',
+                    border: '1px solid rgba(var(--accent-cyan-rgb),0.24)',
                     color: 'var(--accent-cyan)',
                     letterSpacing: '0.05em',
                   }}>{tag}</span>

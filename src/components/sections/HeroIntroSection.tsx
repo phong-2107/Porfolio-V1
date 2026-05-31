@@ -8,7 +8,10 @@ export default function HeroIntroSection() {
     <section className="relative z-20 flex min-h-[100dvh] w-full flex-col font-sans overflow-hidden">
       {/* Wordmark */}
       <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none z-0">
-        <h1 className="portfolio-wordmark gsap-scale font-display text-[18vw] font-black uppercase leading-none tracking-tighter opacity-[0.03] md:text-[220px]">
+        <h1 
+          className="gsap-scale font-display text-[18vw] font-black uppercase leading-none tracking-tighter md:text-[220px]"
+          style={{ color: 'rgba(244, 239, 231, 0.035)' }}
+        >
           PHONG
         </h1>
       </div>
@@ -68,9 +71,9 @@ export default function HeroIntroSection() {
                 className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter" 
                 data-motion="hero-title"
                 style={{
-                  WebkitTextStroke: '1px rgba(255, 255, 255, 0.12)',
+                  WebkitTextStroke: '1px rgba(244, 239, 231, 0.12)',
                   color: 'transparent',
-                  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%)',
+                  background: 'linear-gradient(180deg, rgba(244, 239, 231, 0.08) 0%, rgba(244, 239, 231, 0) 100%)',
                   WebkitBackgroundClip: 'text',
                   opacity: 0.95
                 }}
@@ -79,7 +82,7 @@ export default function HeroIntroSection() {
               </h2>
               {/* Foreground solid name, overlapping */}
               <h2 
-                className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mt-[-0.8rem] md:mt-[-2rem] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" 
+                className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter text-[color:var(--text-primary)] mt-[-0.8rem] md:mt-[-2rem] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" 
                 data-motion="hero-title"
               >
                 THANH PHONG
@@ -120,9 +123,9 @@ export default function HeroIntroSection() {
                 className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter" 
                 data-motion="hero-title"
                 style={{
-                  WebkitTextStroke: '1px rgba(255, 255, 255, 0.12)',
+                  WebkitTextStroke: '1px rgba(244, 239, 231, 0.12)',
                   color: 'transparent',
-                  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%)',
+                  background: 'linear-gradient(180deg, rgba(244, 239, 231, 0.08) 0%, rgba(244, 239, 231, 0) 100%)',
                   WebkitBackgroundClip: 'text',
                   opacity: 0.95
                 }}
@@ -131,7 +134,7 @@ export default function HeroIntroSection() {
               </h2>
               {/* Foreground solid role, overlapping */}
               <h2 
-                className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mt-[-0.8rem] md:mt-[-2rem] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" 
+                className="font-display text-5xl md:text-8xl font-black uppercase tracking-tighter text-[color:var(--text-primary)] mt-[-0.8rem] md:mt-[-2rem] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" 
                 data-motion="hero-title"
               >
                 DEVELOPER
@@ -148,11 +151,11 @@ export default function HeroIntroSection() {
           <div className="flex flex-wrap items-center gap-4 mt-4 w-full md:w-auto">
             <a
               href={`mailto:${OWNER.email}`}
-              className="hero-cta-btn group relative flex items-center justify-between gap-6 cursor-pointer rounded-full bg-gradient-to-r from-[color:var(--accent-orange)] to-[color:var(--accent-orange-hover)] pl-8 pr-3 py-3 text-xs font-extrabold uppercase tracking-widest text-white shadow-[var(--shadow-orange)] w-full md:w-auto"
+              className="hero-cta-btn group relative flex items-center justify-between gap-6 cursor-pointer rounded-full bg-gradient-to-r from-[color:var(--accent-orange)] to-[color:var(--accent-orange-hover)] pl-8 pr-3 py-3 text-xs font-extrabold uppercase tracking-widest text-[color:var(--bg-deep)] shadow-[var(--shadow-orange)] w-full md:w-auto"
               data-motion="magnetic"
             >
               <span>HIRE ME</span>
-              <span className="hero-cta-btn-arrow w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
+              <span className="hero-cta-btn-arrow w-8 h-8 rounded-full bg-[color:var(--bg-deep)]/15 flex items-center justify-center">
                 <ArrowRight size={14} />
               </span>
             </a>

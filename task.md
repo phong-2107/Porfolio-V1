@@ -77,3 +77,29 @@ Nhật ký đầy đủ và chi tiết các công việc đã thực hiện qua 
   - `[x]` Tháo gỡ các thẻ card bao quanh mô tả để tạo không gian mở, tối giản và phóng khoáng.
   - `[x]` Sửa lỗi hiển thị sai lệch cột/swapped columns trên Desktop bằng cách sửa lỗi cú pháp `grid-template-cols` thành `grid-template-columns` và gán thuộc tính `grid-column` cho các khối con.
   - `[x]` Đóng gói và chạy thử nghiệm biên dịch bằng `npm.cmd run build` để xác minh độ tin cậy.
+
+- `[x]` **Phase 16: Component-level Slide-Up Scroll Transitions (Abhijeet Dhikale style)**
+  - `[x]` Modify section files to wrap contents in `.section-focal-wrapper`
+  - `[x]` Update `src/styles/components.css` to add `.section-focal-wrapper` styles
+  - `[x]` Update `src/components/Hero.tsx` to target `.section-focal-wrapper`
+  - `[x]` Run build to verify correct compile health
+
+- `[x]` **Phase 17: Scroll Animation Fix for AboutMeSection** (Khắc phục hoạt ảnh nhóm About Me)
+  - `[x]` Gỡ bỏ hoạt ảnh ScrollTrigger cục bộ trong [AboutMeSection.tsx](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/components/sections/AboutMeSection.tsx) để tránh xung đột vòng đời React.
+  - `[x]` Khai báo tập trung hoạt ảnh trượt/thu phóng `#about-me` trong [Hero.tsx](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/components/Hero.tsx) dưới dạng timeline cùng thứ tự dòng chảy.
+  - `[x]` Di chuyển camera-focus transitions loop xuống cuối `useEffect` trong [Hero.tsx](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/components/Hero.tsx) sau khi đã tạo các pin-spacers của `#about` và `#contact` để ScrollTrigger tính toán toạ độ cuộn chuẩn xác.
+  - `[x]` Biên dịch thành công bằng `npm run build`.
+
+- `[x]` **Phase 18: Upgraded AboutMeSection UI & Cinematic Motion** (Nâng cấp giao diện & Hoạt ảnh đẳng cấp)
+  - `[x]` Tích hợp thuật toán tự động tách chữ thành các từ `.about-reveal-word` trong [AboutMeSection.tsx](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/components/sections/AboutMeSection.tsx) để tạo hiệu ứng trượt trồi xuất hiện (mask/reveal) từng chữ điện ảnh.
+  - `[x]` Phát triển tương tác xoay 3D vật lý (3D Hover Parallax Tilt) trên thẻ chân dung `.about-avatar-card` bằng cách lắng nghe tọa độ chuột và đẩy giá trị qua `gsap.quickTo` ngoài vòng lặp re-render của React.
+  - `[x]` Thay thế khối văn bản đơn điệu bằng cấu trúc lưới Micro-Bento asymmetric (2x2 grid) chứa các thông số kinh nghiệm thực tế của chủ sở hữu có thiết kế kính mờ refraction viền tinh tế.
+  - `[x]` Biên đạo lại toàn bộ timeline ScrollTrigger của `#about-me` tại [Hero.tsx](file:///c:/Users/Admin/OneDrive/Máy tính/Porfolio-V1/src/components/Hero.tsx) sử dụng các điểm gối thời gian âm hợp lý, chuyển động nảy mềm (`back.out` & `elastic.out`) tạo cảm xúc công nghệ cao cấp.
+  - `[x]` Biên dịch dự án thành công đạt chuẩn 60fps.
+
+- `[x]` **Phase 19: Upgraded ShowreelSection UI & Theme Alignment** (Đồng bộ hệ màu & Nâng cấp giao diện Showreel)
+  - `[x]` Thay đổi mã màu lavender `#D2A8FF` và hiệu ứng phát sáng mờ ảo sang dải màu đặc trưng của thương hiệu (`--accent-orange` & `--accent-cyan`).
+  - `[x]` Cấu hình lại giao diện HUD Cards: Thiết kế card **DEVELOP** theo phong cách kỹ thuật màu Cyan và card **DESIGN** theo phong cách sáng tạo màu Orange.
+  - `[x]` Nâng cấp Quả Cầu Phát Sáng Thủy Tinh (Orb) thành một cấu thể vật lý phản chiếu 2 lớp chất liệu kính mờ kết hợp dải màu nền đa sắc rực rỡ nhưng dịu nhẹ.
+  - `[x]` Thêm micro-interactions cho các viền góc bracket, icon chuyển hướng mượt mà khi hover.
+  - `[x]` Biên dịch dự án thành công bằng `npm run build` để kiểm tra độ tin cậy.

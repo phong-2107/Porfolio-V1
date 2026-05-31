@@ -1,5 +1,5 @@
 .text-stroke {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  -webkit-text-stroke: 1px rgba(244, 239, 231, 0.1);
   color: transparent;
 }
 
@@ -38,7 +38,7 @@
 .portfolio-icon-button:hover {
   color: var(--text-primary);
   border-color: var(--border-cyan);
-  background: rgba(16, 42, 48, 0.45);
+  background: rgba(79, 166, 154, 0.12);
 }
 
 .portfolio-text-secondary {
@@ -133,7 +133,7 @@
 .scroll-indicator-mouse {
   width: 24px;
   height: 40px;
-  border: 2.2px solid rgba(248, 250, 252, 0.35);
+  border: 2.2px solid rgba(244, 239, 231, 0.35);
   border-radius: 99px;
   position: relative;
   display: flex;
@@ -142,16 +142,16 @@
   -webkit-backdrop-filter: blur(4px);
   box-shadow: 
     0 4px 12px rgba(0, 0, 0, 0.6), 
-    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    inset 0 1px 2px rgba(244, 239, 231, 0.1);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scroll-indicator-mouse:hover {
   border-color: var(--accent-cyan);
   box-shadow: 
-    0 0 15px rgba(18, 214, 221, 0.25),
+    0 0 15px rgba(79, 166, 154, 0.18),
     0 4px 12px rgba(0, 0, 0, 0.6),
-    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    inset 0 1px 2px rgba(244, 239, 231, 0.1);
 }
 
 .scroll-indicator-wheel {
@@ -195,4 +195,34 @@
 
 .animate-scanner-line {
   animation: scanner-slide 4s linear infinite;
+}
+
+/* GPU-safe hardware acceleration indicator for cinematic focal blur */
+.gpu-accelerated-focus {
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.section-focal-wrapper {
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Cinematic video aperture zoom hardware acceleration */
+.video-cinematic-aperture {
+  will-change: transform, filter;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
