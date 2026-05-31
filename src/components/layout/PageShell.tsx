@@ -8,7 +8,7 @@ const PageShell = forwardRef<HTMLElement, PageShellProps>(function PageShell(
   { children },
   ref,
 ) {
-  return <main ref={ref}>{children}</main>;
+  return <main ref={ref} className="w-full max-w-full overflow-x-hidden">{children}</main>;
 });
 
 export default PageShell;

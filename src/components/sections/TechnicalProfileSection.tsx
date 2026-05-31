@@ -1,11 +1,10 @@
 import { useRef } from 'react';
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { OWNER, SKILLS } from '../../data/portfolio';
 import SkillBadge from '../ui/SkillBadge';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+const { gsap } = getGsap();
 
 export default function TechnicalProfileSection() {
   const containerRef = useRef<HTMLElement>(null);

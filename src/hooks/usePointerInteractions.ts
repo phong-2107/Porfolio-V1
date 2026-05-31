@@ -13,6 +13,8 @@ const SELECTORS = [
   '.pricing-box',
   '.team-member-box',
   '.testimonial-box',
+  '.social-icon-link',
+  '[data-motion="cta"]',
 ].join(', ');
 
 type MotionProfile = {
@@ -51,13 +53,6 @@ export function usePointerInteractions() {
 
     const elements = new Set<HTMLElement>();
     const cleanupCallbacks = new Map<HTMLElement, () => void>();
-    const rectCache = new WeakMap<HTMLElement, DOMRect>();
-
-    const refreshRects = () => {
-      elements.forEach((element) => {
-        rectCache.set(element, element.getBoundingClientRect());
-      });
-    };
 
     const emitHover = (hovering: boolean) => {
       window.dispatchEvent(new CustomEvent('motion-cursor:hover', { detail: { hovering } }));
@@ -70,13 +65,12 @@ export function usePointerInteractions() {
       element.classList.add('motion-hover');
 
       const handleEnter = () => {
-        rectCache.set(element, element.getBoundingClientRect());
         element.classList.add('is-pointer-active');
         emitHover(true);
       };
 
       const handleMove = (event: MouseEvent | PointerEvent) => {
-        const rect = rectCache.get(element) ?? element.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
         const profile = getMotionProfile(element);
         const offsetX = event.clientX - (rect.left + rect.width / 2);
         const offsetY = event.clientY - (rect.top + rect.height / 2);
@@ -127,13 +121,8 @@ export function usePointerInteractions() {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    window.addEventListener('resize', refreshRects);
-    window.addEventListener('scroll', refreshRects, true);
-
     return () => {
       observer.disconnect();
-      window.removeEventListener('resize', refreshRects);
-      window.removeEventListener('scroll', refreshRects, true);
       cleanupCallbacks.forEach((cleanup) => cleanup());
       elements.clear();
       cleanupCallbacks.clear();

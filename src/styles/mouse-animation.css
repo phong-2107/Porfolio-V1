@@ -80,8 +80,11 @@ body.has-motion-cursor * {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--accent-cyan);
-  box-shadow: 0 0 16px rgba(var(--accent-cyan-rgb), 0.5);
+  background: #ffffff;
+  box-shadow: 
+    0 0 8px #ffffff,
+    0 0 16px #0088ff,
+    0 0 32px #0044ff;
   transition:
     opacity 0.2s ease,
     width 0.22s ease,
@@ -92,10 +95,13 @@ body.has-motion-cursor * {
 .motion-cursor--ring {
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(244, 239, 231, 0.82);
+  border: 1.5px solid rgba(244, 239, 231, 0.95);
   border-radius: 50%;
-  background: rgba(244, 239, 231, 0.05);
-  box-shadow: 0 0 38px rgba(var(--accent-cyan-rgb), 0.22);
+  background: rgba(244, 239, 231, 0.15);
+  box-shadow: 
+    0 0 15px rgba(244, 239, 231, 0.3),
+    0 0 45px rgba(var(--accent-cyan-rgb), 0.6),
+    inset 0 0 15px rgba(var(--accent-cyan-rgb), 0.4);
   transition:
     opacity 0.2s ease,
     width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
@@ -107,18 +113,22 @@ body.has-motion-cursor * {
 .motion-cursor--dot.is-hovering {
   width: 12px;
   height: 12px;
-  background: var(--accent-cyan);
-  box-shadow: 0 0 24px rgba(var(--accent-cyan-rgb), 0.7);
+  background: #ffffff;
+  box-shadow: 
+    0 0 10px #ffffff,
+    0 0 20px #0088ff,
+    0 0 40px #0044ff,
+    0 0 60px #0022ff;
 }
 
 .motion-cursor--ring.is-hovering {
   width: 88px;
   height: 88px;
-  border: 1px solid rgba(var(--accent-cyan-rgb), 0.6);
-  background: rgba(var(--accent-orange-rgb), 0.06);
+  border: 1.5px solid rgba(var(--accent-cyan-rgb), 0.9);
+  background: rgba(var(--accent-orange-rgb), 0.15);
   box-shadow: 
-    0 0 32px rgba(var(--accent-cyan-rgb), 0.2),
-    inset 0 0 20px rgba(var(--accent-orange-rgb), 0.12);
+    0 0 40px rgba(var(--accent-cyan-rgb), 0.6),
+    inset 0 0 30px rgba(var(--accent-orange-rgb), 0.5);
 }
 
 .motion-cursor--dot.is-pressed {

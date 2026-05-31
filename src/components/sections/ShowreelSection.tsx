@@ -1,10 +1,9 @@
 import { useRef } from 'react';
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDownRight } from 'lucide-react';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+const { gsap, ScrollTrigger } = getGsap();
 
 export default function ShowreelSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -37,13 +36,12 @@ export default function ShowreelSection() {
       }
     );
 
-    // 2. Video Scale & Fade Reveal
+    // 2. Video Scale & Fade Reveal (Tối ưu: Bỏ filter blur cực nặng trên video)
     gsap.fromTo(videoRef.current,
-      { scale: 0.8, opacity: 0, filter: 'blur(20px)' },
+      { scale: 0.8, opacity: 0 },
       {
         scale: 1,
         opacity: 1,
-        filter: 'blur(0px)',
         duration: 1.8,
         ease: 'power3.out',
         scrollTrigger: {
@@ -95,16 +93,10 @@ export default function ShowreelSection() {
       );
     }
 
-    // 5. Video Play/Pause Performance Guardrails (Pre-play & Lazy-pause)
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: 'top 150%',    // Kích hoạt play sớm khi section còn cách màn hình 50% (trước khi thấy)
-      end: 'bottom -20%',   // Tắt khi đã cuộn qua khỏi màn hình 20%
-      onEnter: () => videoRef.current?.play().catch(() => {}),
-      onLeave: () => videoRef.current?.pause(),
-      onEnterBack: () => videoRef.current?.play().catch(() => {}),
-      onLeaveBack: () => videoRef.current?.pause(),
-    });
+    // 5. Video Native Optimization
+    // Gỡ bỏ hoàn toàn việc dùng JS (ScrollTrigger) để ép Play/Pause video.
+    // Trình duyệt hiện đại tự động tạm ngưng render các thẻ <video> khi cuộn khuất khỏi màn hình.
+    // Việc can thiệp bằng JS dễ gây lỗi Promise và làm video bị đứng (frozen).
 
   }, { scope: containerRef });
 
@@ -117,7 +109,7 @@ export default function ShowreelSection() {
   return (
     <section 
       ref={containerRef}
-      id="what-i-do" 
+      id="showreel" 
       className="hero-section-panel relative z-20 flex min-h-[100dvh] w-full items-center justify-center px-6 py-32 md:px-24 overflow-hidden"
     >
       {/* Background ambient glow matching the tech theme with subtle cyan/orange radial blending */}
@@ -149,15 +141,16 @@ export default function ShowreelSection() {
 
           {/* CENTER: Video */}
           <div className="lg:col-span-4 flex justify-center relative z-10 pointer-events-none">
-            <div className="relative w-full max-w-[700px] aspect-square lg:aspect-auto lg:h-[800px] flex items-center justify-center transform scale-110 lg:scale-[1.35]">
+            <div className="relative w-full max-w-[700px] aspect-square lg:aspect-auto lg:h-[800px] flex items-center justify-center transform-gpu scale-110 lg:scale-[1.35] will-change-transform">
               <video
                 ref={videoRef}
                 src="/assets/videos/Video-V1_2.webm"
+                autoPlay
                 loop
                 muted
                 playsInline
                 preload="auto"
-                className="w-full h-full object-contain filter contrast-[1.1] brightness-[1.1] mix-blend-screen"
+                className="w-full h-full object-contain mix-blend-screen"
               />
             </div>
           </div>
@@ -197,7 +190,8 @@ export default function ShowreelSection() {
             {/* Card 1: DEVELOP (Cyan Technical Accents) */}
             <div 
               ref={(el) => addToRefs(el, cardRefs)}
-              className="group relative rounded-2xl border border-dashed border-[color:var(--border-strong)]/40 bg-[color:var(--bg-surface)]/10 p-8 md:p-10 transition-all duration-500 hover:border-[color:var(--accent-cyan)] hover:bg-[color:var(--accent-cyan)]/5"
+              data-motion="card"
+              className="group relative rounded-2xl border border-dashed border-[color:var(--border-strong)]/40 bg-[color:var(--bg-surface)]/10 p-8 md:p-10 transition-[border-color,background-color,box-shadow] duration-500 hover:border-[color:var(--accent-cyan)] hover:bg-[color:var(--accent-cyan)]/5"
             >
               {/* Technical corner brackets */}
               <div className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-[color:var(--text-secondary)]/30 rounded-tl-lg transition-colors duration-300 group-hover:border-[color:var(--accent-cyan)] -translate-x-[1px] -translate-y-[1px]" />
@@ -227,7 +221,7 @@ export default function ShowreelSection() {
               </p>
 
               {/* Arrow Icon Box */}
-              <div className="absolute bottom-6 right-6 w-10 h-10 border border-[color:var(--border-strong)] flex items-center justify-center transition-all duration-300 group-hover:border-[color:var(--accent-cyan)] group-hover:bg-[color:var(--accent-cyan)]/10 group-hover:-translate-y-1 group-hover:scale-105">
+              <div className="absolute bottom-6 right-6 w-10 h-10 border border-[color:var(--border-strong)] flex items-center justify-center transition-[transform,border-color,background-color] duration-300 group-hover:border-[color:var(--accent-cyan)] group-hover:bg-[color:var(--accent-cyan)]/10 group-hover:-translate-y-1 group-hover:scale-105">
                 <ArrowDownRight size={18} className="text-[color:var(--text-secondary)] group-hover:text-[color:var(--accent-cyan)] transition-colors duration-300" />
               </div>
             </div>
@@ -235,7 +229,8 @@ export default function ShowreelSection() {
             {/* Card 2: DESIGN (Orange Creative Accents) */}
             <div 
               ref={(el) => addToRefs(el, cardRefs)}
-              className="group relative rounded-2xl border border-dashed border-[color:var(--border-strong)]/40 bg-[color:var(--bg-surface)]/10 p-8 md:p-10 transition-all duration-500 hover:border-[color:var(--accent-orange)] hover:bg-[color:var(--accent-orange)]/5"
+              data-motion="card"
+              className="group relative rounded-2xl border border-dashed border-[color:var(--border-strong)]/40 bg-[color:var(--bg-surface)]/10 p-8 md:p-10 transition-[border-color,background-color,box-shadow] duration-500 hover:border-[color:var(--accent-orange)] hover:bg-[color:var(--accent-orange)]/5"
             >
               {/* Technical corner brackets */}
               <div className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-[color:var(--text-secondary)]/30 rounded-tl-lg transition-colors duration-300 group-hover:border-[color:var(--accent-orange)] -translate-x-[1px] -translate-y-[1px]" />
@@ -265,7 +260,7 @@ export default function ShowreelSection() {
               </p>
 
               {/* Arrow Icon Box */}
-              <div className="absolute bottom-6 right-6 w-10 h-10 border border-[color:var(--border-strong)] flex items-center justify-center transition-all duration-300 group-hover:border-[color:var(--accent-orange)] group-hover:bg-[color:var(--accent-orange)]/10 group-hover:-translate-y-1 group-hover:scale-105">
+              <div className="absolute bottom-6 right-6 w-10 h-10 border border-[color:var(--border-strong)] flex items-center justify-center transition-[transform,border-color,background-color] duration-300 group-hover:border-[color:var(--accent-orange)] group-hover:bg-[color:var(--accent-orange)]/10 group-hover:-translate-y-1 group-hover:scale-105">
                 <ArrowDownRight size={18} className="text-[color:var(--text-secondary)] group-hover:text-[color:var(--accent-orange)] transition-colors duration-300" />
               </div>
             </div>

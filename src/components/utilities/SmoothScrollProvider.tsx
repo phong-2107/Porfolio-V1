@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLoading } from '../../hooks/useLoading';
-
-gsap.registerPlugin(ScrollTrigger);
+import { getGsap } from '../../lib/gsap';
 
 export default function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   const { isLoading } = useLoading();
@@ -13,17 +10,21 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
 
   // Initialize and destroy scroll smoothing engines based on platform
   useEffect(() => {
+    const { gsap, ScrollTrigger } = getGsap();
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     setIsReady(false);
 
-    console.log('SmoothScroll: Initializing Global Lenis smooth scrolling');
-    
     const lenis = new Lenis({
-      duration: 1.4, // Rich, momentum-filled smooth scroll
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo out
+      // Thay vì dùng duration/easing cố định, sử dụng lerp để tạo quán tính (momentum) siêu mượt
+      lerp: reduceMotion ? 1 : 0.06, 
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.05, // Subtle responsive scroll booster
+      smoothWheel: !reduceMotion,
+      // Giảm hệ số cuộn chuột để làm chậm tốc độ cuộn xuống (từ 0.92 -> 0.65)
+      wheelMultiplier: reduceMotion ? 1 : 0.65,
+      touchMultiplier: 1.15, // Giữ nguyên tốc độ cảm ứng trên mobile để tránh khó chịu
+      syncTouch: false,
     });
 
     lenis.on('scroll', ScrollTrigger.update);
@@ -39,12 +40,19 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     };
 
     gsap.ticker.add(updateRaf);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     setIsReady(true); // Mount children AFTER Lenis is created
 
+    const refreshAfterLayout = () => ScrollTrigger.refresh();
+    const refreshTimeout = window.setTimeout(refreshAfterLayout, 250);
+    const fontsReady = document.fonts?.ready;
+    fontsReady?.then(refreshAfterLayout).catch(() => {});
+    window.addEventListener('load', refreshAfterLayout, { once: true });
+
     return () => {
-      console.log('SmoothScroll: Destroying Global Lenis');
+      window.clearTimeout(refreshTimeout);
+      window.removeEventListener('load', refreshAfterLayout);
       lenis.destroy();
       lenisRef.current = null;
       (window as any).lenis = undefined;
@@ -62,6 +70,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
     if (isLoading) {
       lenis.stop();
     } else {
+      const { ScrollTrigger } = getGsap();
       lenis.start();
       // Delay ScrollTrigger refresh slightly to allow loading screen exit animation to complete
       setTimeout(() => {
@@ -71,7 +80,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   }, [isLoading, isReady]);
 
   return (
-    <div id="smooth-wrapper" style={{ position: 'relative', zIndex: 10 }}>
+    <div id="smooth-wrapper" style={{ position: 'relative' }}>
       <div id="smooth-content">
         {isReady && children}
       </div>

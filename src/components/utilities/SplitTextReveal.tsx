@@ -1,8 +1,7 @@
 import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap } = getGsap();
 
 interface SplitTextRevealProps {
   text: string;

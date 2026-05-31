@@ -22,7 +22,7 @@ export default function HeaderMenu({ isHamburgActive, isSidebarActive, onHamburg
     window.location.href = "/";
   };
 
-  const springConfig = { type: 'spring', stiffness: 400, damping: 20 };
+  const springConfig = { type: 'spring', stiffness: 400, damping: 20 } as const;
 
   return (
     <>

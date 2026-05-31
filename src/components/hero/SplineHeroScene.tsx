@@ -2,11 +2,10 @@ import Spline from '@splinetool/react-spline';
 import type { Application } from '@splinetool/runtime';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap, ScrollTrigger } = getGsap();
 
 const SHOW_CALIBRATION_PANEL = false; // Đặt thành true nếu cần mở lại bảng cân chỉnh 3D
 
@@ -55,140 +54,83 @@ export default function SplineHeroScene() {
   const setupAnimations = contextSafe(() => {
     if (!containerRef.current) return;
 
-    // Thiết lập hiển thị ban đầu ổn định cho container 3D
-    gsap.set(containerRef.current, {
-      x: 0,
-      scale: 1.62,
-      y: '8vh',
-      opacity: 1,
-      visibility: "visible",
-      force3D: true
-    });
-
-    // Thay thế "vw" String bằng Pixel số thực tuyệt đối
-    const xOffset = window.innerWidth > 768 ? window.innerWidth * 0.28 : window.innerWidth * 0.4;
-
     const monitorObj = spline.current?.findObjectByName('Monitor');
     const scene1Obj = spline.current?.findObjectByName('Scene 1');
     const bodyObj = spline.current?.findObjectByName('Body');
     const podiumObj = spline.current?.findObjectByName('Podium');
-
-    // 1. Bản đồ di chuyển gốc của Spline đi qua toàn bộ các section của trang
     const mainScrollContainer = document.querySelector(".main-scroll-container");
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: mainScrollContainer || undefined,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5,
-        invalidateOnRefresh: true,
-      },
-      onUpdate: () => {
-        if (scene1Obj) {
-          gsap.set(scene1Obj.rotation, {
-            x: baseRot.current.sceneX,
-            y: baseRot.current.sceneY,
-            z: baseRot.current.sceneZ,
-          });
-        }
-        if (monitorObj) {
-          gsap.set(monitorObj.rotation, {
-            x: baseRot.current.monitorX + lastHoverOffset.current.x,
-            y: baseRot.current.monitorY + lastHoverOffset.current.y,
-            z: baseRot.current.monitorZ + lastHoverOffset.current.z,
-          });
-        }
-        if (bodyObj) {
-          gsap.set(bodyObj.rotation, {
-            x: baseRot.current.bodyX,
-            y: baseRot.current.bodyY,
-            z: baseRot.current.bodyZ,
-          });
-        }
-        if (podiumObj) {
-          gsap.set(podiumObj.rotation, {
-            x: baseRot.current.podiumX,
-            y: baseRot.current.podiumY,
-            z: baseRot.current.podiumZ,
-          });
-        }
-      }
-    });
 
-    if (monitorObj && scene1Obj) {
-      // Giai đoạn chuyển tiếp từ Hero sang About (từ progress 0 đến 0.5 của timeline, khớp với chiều cao Hero)
-      tl.fromTo(baseRot.current, 
-        {
-          monitorX: 0,
-          monitorY: 0.630,
-          monitorZ: 0,
-          sceneX: 0,
-          sceneY: -0.340,
-          sceneZ: 0,
-          bodyX: 0,
-          bodyY: 0.630,
-          bodyZ: 0,
-          podiumX: -1.570,
-          podiumY: 0.000,
-          podiumZ: -1.015
+    // Sử dụng gsap.matchMedia để quản lý Responsive (tự động tính toán lại khi resize màn hình)
+    let mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 1025px)",
+      isTablet: "(min-width: 641px) and (max-width: 1024px)",
+      isMobile: "(max-width: 640px)"
+    }, (context) => {
+      let { isDesktop, isTablet, isMobile } = context.conditions as any;
+
+      // Tính toán tỷ lệ hiển thị và vị trí lệch chuẩn cho từng màn hình
+      // Tỷ lệ cũ (1.62) quá khổng lồ làm che khuất hoàn toàn chữ ở hai bên.
+      // Cân chỉnh lại: Desktop (1.1), Tablet (0.85), Mobile (0.6)
+      const currentScale = isMobile ? 0.6 : (isTablet ? 0.85 : 1.1);
+      const xOffset = isMobile ? window.innerWidth * 0.02 : (isTablet ? window.innerWidth * 0.25 : window.innerWidth * 0.35);
+      const yOffset = isMobile ? '12vh' : (isTablet ? '8vh' : '4vh'); // Đẩy mô hình lên một chút để thấy rõ receipt paper
+
+      // Thiết lập hiển thị ban đầu ổn định cho container 3D
+      gsap.set(containerRef.current, {
+        x: 0,
+        scale: currentScale,
+        y: yOffset,
+        opacity: 1,
+        visibility: "visible",
+        force3D: true
+      });
+
+      // Bản đồ di chuyển gốc của Spline đi qua toàn bộ các section của trang
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: mainScrollContainer || undefined,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.5,
+          invalidateOnRefresh: true,
         },
-        {
-          monitorX: 0,
-          monitorY: -0.175,
-          monitorZ: -0.020,
-          sceneX: 0,
-          sceneY: -0.340,
-          sceneZ: 0,
-          bodyX: 0,
-          bodyY: -0.175,
-          bodyZ: -0.020,
-          podiumX: -1.570,
-          podiumY: 0.005,
-          podiumZ: -1.670,
-          ease: "none",
-          duration: 0.5,
-        },
+        onUpdate: () => {
+          if (scene1Obj) gsap.set(scene1Obj.rotation, { x: baseRot.current.sceneX, y: baseRot.current.sceneY, z: baseRot.current.sceneZ });
+          if (monitorObj) gsap.set(monitorObj.rotation, { x: baseRot.current.monitorX + lastHoverOffset.current.x, y: baseRot.current.monitorY + lastHoverOffset.current.y, z: baseRot.current.monitorZ + lastHoverOffset.current.z });
+          if (bodyObj) gsap.set(bodyObj.rotation, { x: baseRot.current.bodyX, y: baseRot.current.bodyY, z: baseRot.current.bodyZ });
+          if (podiumObj) gsap.set(podiumObj.rotation, { x: baseRot.current.podiumX, y: baseRot.current.podiumY, z: baseRot.current.podiumZ });
+        }
+      });
+
+      if (monitorObj && scene1Obj) {
+        // Giai đoạn chuyển tiếp từ Hero sang About (progress 0 -> 0.5)
+        tl.fromTo(baseRot.current, 
+          { monitorX: 0, monitorY: 0.630, monitorZ: 0, sceneX: 0, sceneY: -0.340, sceneZ: 0, bodyX: 0, bodyY: 0.630, bodyZ: 0, podiumX: -1.570, podiumY: 0.000, podiumZ: -1.015 },
+          { monitorX: 0, monitorY: -0.175, monitorZ: -0.020, sceneX: 0, sceneY: -0.340, sceneZ: 0, bodyX: 0, bodyY: -0.175, bodyZ: -0.020, podiumX: -1.570, podiumY: 0.005, podiumZ: -1.670, ease: "none", duration: 0.5 },
+          0
+        );
+        // Giữ nguyên góc quay cho phần còn lại
+        tl.to(baseRot.current, { duration: 3.0 }, 0.5);
+      }
+
+      // Di chuyển Container sang phải khi cuộn từ Hero sang About
+      tl.fromTo(containerRef.current,
+        { x: 0, y: yOffset, scale: currentScale },
+        { x: xOffset, y: yOffset, scale: currentScale, force3D: true, ease: "none", duration: 0.5 },
         0
       );
 
-      // Giữ nguyên các giá trị xoay của About cho phần còn lại của trang (duration 3.0)
-      tl.to(baseRot.current, {
-        duration: 3.0,
-      }, 0.5);
-    }
-
-    // Di chuyển Container sang phải khi cuộn từ Hero sang About (0 đến 0.5)
-    tl.fromTo(containerRef.current,
-      {
-        x: 0,
-        y: '8vh',
-        scale: 1.62,
-      },
-      {
-        x: xOffset * 1.0,
-        y: '8vh',
-        scale: 1.62,
-        force3D: true,
-        ease: "none",
-        duration: 0.5
-      },
-      0
-    );
-
-    // Giữ nguyên vị trí của Container ở bên phải trong suốt phần còn lại của trang (0.5 đến 3.5)
-    tl.to(containerRef.current,
-      {
-        x: xOffset * 1.0,
-        y: '8vh',
-        scale: 1.62,
-        force3D: true,
-        ease: "none",
-        duration: 3.0
-      },
-      0.5
-    );
+      // Giữ nguyên vị trí của Container ở bên phải trong suốt phần còn lại của trang
+      tl.to(containerRef.current,
+        { x: xOffset, y: yOffset, scale: currentScale, force3D: true, ease: "none", duration: 3.0 },
+        0.5
+      );
+    });
 
     // 2. Cập nhật trạng thái cuộn khi người dùng đi vào/ra phần Technical Profile (About)
+    // Phần này không phụ thuộc vào responsive scale nên đặt ngoài matchMedia để tránh tạo lại
     const aboutSection = document.getElementById("about");
     ScrollTrigger.create({
       trigger: aboutSection || undefined,

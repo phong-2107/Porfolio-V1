@@ -1,62 +1,99 @@
 import { useEffect } from 'react';
-import gsap from 'gsap';
+import { getGsap } from '../lib/gsap';
+import { canUseMotionPointer } from '../lib/pointer';
+
+type QuickTo = (value: number) => void;
+
+type MagneticState = {
+  xTo: QuickTo;
+  yTo: QuickTo;
+  scaleTo: QuickTo;
+};
+
+function getDepth(element: HTMLElement) {
+  const value = Number(element.dataset.hoverDepth);
+  return Number.isFinite(value) && value > 0 ? value : 0.34;
+}
 
 export function useMagneticElements() {
   useEffect(() => {
-    if (window.innerWidth <= 768) return; // Không kích hoạt trên mobile
+    if (!canUseMotionPointer()) return;
 
-    const elements = document.querySelectorAll('[data-motion="magnetic"]');
-    const cleanups: (() => void)[] = [];
+    const { gsap } = getGsap();
+    const states = new WeakMap<HTMLElement, MagneticState>();
+    const cleanups = new Map<HTMLElement, () => void>();
+    const emitHover = (hovering: boolean) => {
+      window.dispatchEvent(new CustomEvent('motion-cursor:hover', { detail: { hovering } }));
+    };
 
-    elements.forEach((el) => {
-      const element = el as HTMLElement;
-      
-      // Tạo quickTo tweens để di chuyển x, y mượt mà hiệu năng cao
-      const xTo = gsap.quickTo(element, "x", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
-      const yTo = gsap.quickTo(element, "y", { duration: 0.6, ease: "elastic.out(1, 0.4)" });
+    const resetElement = (element: HTMLElement) => {
+      const state = states.get(element);
+      state?.xTo(0);
+      state?.yTo(0);
+      state?.scaleTo(1);
+    };
 
-      const handleMouseMove = (e: MouseEvent) => {
-        const bound = element.getBoundingClientRect();
-        
-        // Tâm vật lý của phần tử
-        const elX = bound.left + bound.width / 2;
-        const elY = bound.top + bound.height / 2;
-        
-        // Khoảng cách từ con trỏ chuột đến tâm vật lý
-        const deltaX = e.clientX - elX;
-        const deltaY = e.clientY - elY;
-        
+    const setupElement = (element: HTMLElement) => {
+      if (cleanups.has(element)) return;
+
+      const state = {
+        xTo: gsap.quickTo(element, 'x', { duration: 0.7, ease: 'elastic.out(1, 0.42)' }),
+        yTo: gsap.quickTo(element, 'y', { duration: 0.7, ease: 'elastic.out(1, 0.42)' }),
+        scaleTo: gsap.quickTo(element, 'scale', { duration: 0.45, ease: 'power3.out' }),
+      };
+      states.set(element, state);
+
+      const handlePointerMove = (event: PointerEvent) => {
+        const rect = element.getBoundingClientRect();
+        const deltaX = event.clientX - (rect.left + rect.width / 2);
+        const deltaY = event.clientY - (rect.top + rect.height / 2);
+        const radius = Math.max(72, Math.min(rect.width, rect.height) * 0.8);
         const distance = Math.hypot(deltaX, deltaY);
-        const radius = 65; // Khoảng cách kích hoạt lực hút (px)
+        const pull = Math.max(0, 1 - distance / radius) * getDepth(element);
 
-        if (distance < radius) {
-          // Lực hút kéo về tâm con trỏ chuột (35%)
-          const pull = 0.35;
-          xTo(deltaX * pull);
-          yTo(deltaY * pull);
-        } else {
-          // Bật nảy về tâm cũ
-          xTo(0);
-          yTo(0);
-        }
+        state.xTo(deltaX * pull);
+        state.yTo(deltaY * pull);
+        state.scaleTo(1 + pull * 0.075);
       };
 
-      const handleMouseLeave = () => {
-        xTo(0);
-        yTo(0);
+      const handlePointerEnter = () => {
+        element.classList.add('is-magnetic-active');
+        emitHover(true);
       };
 
-      window.addEventListener('mousemove', handleMouseMove);
-      element.addEventListener('mouseleave', handleMouseLeave);
+      const handlePointerLeave = () => {
+        element.classList.remove('is-magnetic-active');
+        resetElement(element);
+        emitHover(false);
+      };
 
-      cleanups.push(() => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        element.removeEventListener('mouseleave', handleMouseLeave);
+      element.addEventListener('pointerenter', handlePointerEnter);
+      element.addEventListener('pointermove', handlePointerMove);
+      element.addEventListener('pointerleave', handlePointerLeave);
+
+      cleanups.set(element, () => {
+        element.removeEventListener('pointerenter', handlePointerEnter);
+        element.removeEventListener('pointermove', handlePointerMove);
+        element.removeEventListener('pointerleave', handlePointerLeave);
+        element.classList.remove('is-magnetic-active');
+        gsap.killTweensOf(element);
+        gsap.set(element, { clearProps: 'x,y,scale' });
       });
-    });
+    };
+
+    const scan = () => {
+      document.querySelectorAll<HTMLElement>('[data-motion="magnetic"]').forEach(setupElement);
+    };
+
+    scan();
+    const observer = new MutationObserver(scan);
+    observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      cleanups.forEach((c) => c());
+      observer.disconnect();
+      cleanups.forEach((cleanup) => cleanup());
+      cleanups.clear();
+      emitHover(false);
     };
   }, []);
 }

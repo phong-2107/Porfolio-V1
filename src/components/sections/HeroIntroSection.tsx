@@ -5,7 +5,7 @@ import ScrambleText from '../utilities/ScrambleText';
 export default function HeroIntroSection() {
 
   return (
-    <section className="relative z-20 flex min-h-[100dvh] w-full flex-col font-sans overflow-hidden">
+    <section className="relative flex min-h-[100dvh] w-full flex-col font-sans overflow-hidden">
       {/* Wordmark */}
       <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none z-0">
         <h1 

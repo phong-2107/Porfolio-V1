@@ -1,8 +1,10 @@
 import { useRef } from 'react';
 import { Github, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { OWNER } from '../../data/portfolio';
-import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { getGsap } from '../../lib/gsap';
+
+const { gsap } = getGsap();
 
 export default function AboutMeSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -214,7 +216,7 @@ export default function AboutMeSection() {
             <div className="flex items-center gap-3">
               <span className="status-dot-cyan animate-pulse" />
               <span className="about-kicker font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--accent-cyan)]">
-                // 01.5 / ABOUT ME
+                // 02.5 / ABOUT ME
               </span>
             </div>
 

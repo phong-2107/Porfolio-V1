@@ -1,16 +1,15 @@
 import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { playClickSound } from '../utilities/clickSound';
 import { scrollToSection } from '../utilities/scrollNavigation';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { ScrollTrigger } = getGsap();
 
 const CHAPTERS = [
   { id: 'hero', title: 'SYS_INIT', num: '01' },
   { id: 'about', title: 'TECH_SPEC', num: '02' },
-  { id: 'about-me', title: 'BIO_DATA', num: '03' },
-  { id: 'showreel', title: 'VIS_WORK', num: '04' },
+  { id: 'showreel', title: 'VIS_WORK', num: '03' },
+  { id: 'about-me', title: 'BIO_DATA', num: '04' },
   { id: 'career', title: 'LOG_BOOK', num: '05' },
   { id: 'projects', title: 'EXP_WORK', num: '06' },
   { id: 'contact', title: 'COM_LINK', num: '07' }
@@ -18,7 +17,7 @@ const CHAPTERS = [
 
 export default function StoryChapterHUD() {
   useGSAP(() => {
-    const triggers: ScrollTrigger[] = [];
+    const triggers: ReturnType<typeof ScrollTrigger.create>[] = [];
 
     CHAPTERS.forEach((ch) => {
       const el = document.getElementById(ch.id);

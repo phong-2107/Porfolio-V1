@@ -2,11 +2,10 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerspectiveCamera, Environment, Float, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { getGsap } from '../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap } = getGsap();
 
 /**
  * InteractiveBasketball: A premium, highly detailed 3D basketball model

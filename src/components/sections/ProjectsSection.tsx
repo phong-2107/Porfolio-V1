@@ -3,11 +3,10 @@ import { Github, ArrowRight } from 'lucide-react';
 import { OWNER, PROJECTS } from '../../data/portfolio';
 import ProjectCard from '../ui/ProjectCard';
 import ProjectDemoModal from '../ui/ProjectDemoModal';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap, ScrollTrigger } = getGsap();
 
 export default function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
@@ -18,7 +17,7 @@ export default function ProjectsSection() {
     const section = sectionRef.current;
     if (!section) return;
 
-    const cards = section.querySelectorAll('[data-project-card]');
+    const cards = gsap.utils.toArray<HTMLElement>(section.querySelectorAll('[data-project-card]'));
 
     // Khởi tạo trạng thái ẩn ban đầu của thẻ
     gsap.set(cards, { y: 80, scale: 0.96, opacity: 0, filter: 'blur(8px)' });
@@ -81,8 +80,31 @@ export default function ProjectsSection() {
       }
     });
 
+    const cardDepthTriggers = cards.map((card, index) => {
+      const depth = index % 2 === 0 ? -6 : 6;
+      const tween = gsap.fromTo(
+        card,
+        { yPercent: 5, rotateZ: depth * 0.15 },
+        {
+          yPercent: -5,
+          rotateZ: depth * -0.12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+          },
+        },
+      );
+
+      return tween.scrollTrigger;
+    });
+
     return () => {
       trigger.kill();
+      cardDepthTriggers.forEach((cardTrigger) => cardTrigger?.kill());
     };
   }, { scope: sectionRef });
 
@@ -92,7 +114,7 @@ export default function ProjectsSection() {
         <div data-section-content className="w-full px-4 md:px-[4vw] max-w-[1920px] mx-auto flex flex-col gap-16">
           
           {/* Tiêu đề phần (Có spacer động ở Desktop tránh che Monitor khi nó đang fade out) */}
-          <div className="w-full flex flex-col lg:flex-row gap-12 justify-between items-start">
+          <div className="w-full flex flex-col lg:flex-row gap-12 justify-between items-start" data-motion="heading">
             <div className="w-full lg:w-[35%] h-[50px] lg:h-[120px] pointer-events-none hidden lg:block" />
             
             <div className="w-full lg:w-[60%] flex flex-col gap-3">
@@ -135,7 +157,9 @@ export default function ProjectsSection() {
               href={`https://${OWNER.github}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-3 rounded-full border border-white/10 px-8 py-4 text-xs font-bold uppercase tracking-widest text-[color:var(--text-primary)] transition-all hover:border-[color:var(--accent-orange)] hover:text-[color:var(--accent-orange)] font-mono"
+              data-motion="magnetic"
+              data-hover-depth="0.22"
+              className="flex items-center gap-3 rounded-full border border-white/10 px-8 py-4 text-xs font-bold uppercase tracking-widest text-[color:var(--text-primary)] transition-[border-color,color,box-shadow,background-color] duration-300 hover:border-[color:var(--accent-orange)] hover:text-[color:var(--accent-orange)] font-mono"
             >
               <Github size={14} />
               All Repositories on GitHub

@@ -130,7 +130,7 @@
     0 0 30px 8px rgba(79, 166, 154, 0.15);
   pointer-events: none;
   z-index: 10;
-  will-change: top;
+  will-change: transform;
 }
 
 /* Individual Career Item styling */

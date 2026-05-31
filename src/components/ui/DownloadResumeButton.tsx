@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useLoading } from '../../hooks/useLoading';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(useGSAP);
+const { gsap } = getGsap();
 
 export default function DownloadResumeButton() {
   const containerRef = useRef<HTMLAnchorElement>(null);

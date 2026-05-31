@@ -1,11 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 import SplineHeroScene from './hero/SplineHeroScene';
 import { useMagneticElements } from '../hooks/useMagneticElements';
 import { useLoading } from '../hooks/useLoading';
+import { getGsap } from '../lib/gsap';
 
 // Import Modular Sections
 import HeroIntroSection from './sections/HeroIntroSection';
@@ -17,7 +15,7 @@ import CareerSection from './sections/CareerSection';
 import ContactSection from './sections/ContactSection';
 import StoryChapterHUD from './ui/StoryChapterHUD';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap, ScrollTrigger } = getGsap();
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -189,7 +187,7 @@ export default function Hero() {
 
       // Scroll progress bar
       gsap.to('.scroll-progress-bar', {
-        width: '100%', ease: 'none',
+        scaleX: 1, ease: 'none',
         scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.1 }
       });
 
@@ -282,7 +280,7 @@ export default function Hero() {
           { opacity: 1, x: 0, letterSpacing: '0.25em', duration: 0.9, ease: 'power3.out' }
         )
         // 2. 3D pop & slide of avatar card
-        .fromTo('#about-me .about-avatar-card', 
+        .fromTo('#about-me .about-avatar-card',
           { x: -100, rotateY: -20, rotateX: 5, z: -80, opacity: 0, filter: 'blur(10px)' },
           { x: 0, rotateY: 0, rotateX: 0, z: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out' },
           '-=0.7'
@@ -306,13 +304,13 @@ export default function Hero() {
           '-=0.6'
         )
         // 6. Staggered float-up of vertical social icons
-        .fromTo('#about-me .about-socials > *', 
+        .fromTo('#about-me .about-socials > *',
           { y: 25, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: 'power3.out' },
           '-=0.8'
         )
         // 7. Glass orb reveal
-        .fromTo('#about-me .about-orb', 
+        .fromTo('#about-me .about-orb',
           { scale: 0, opacity: 0 },
           { scale: 1, opacity: 1, duration: 1.2, ease: 'elastic.out(1, 0.6)' },
           '-=1.2'
@@ -342,9 +340,16 @@ export default function Hero() {
         scaleY: 1, ease: 'none',
         scrollTrigger: { trigger: '.timeline-container', start: 'top 40%', end: 'bottom 60%', scrub: true }
       });
-      gsap.fromTo('.timeline-tracer-dot', { top: '0%' }, {
-        top: '100%', ease: 'none',
-        scrollTrigger: { trigger: '.timeline-container', start: 'top 40%', end: 'bottom 60%', scrub: true }
+      gsap.fromTo('.timeline-tracer-dot', { y: 0 }, {
+        y: () => document.querySelector<HTMLElement>('.timeline-axis')?.offsetHeight ?? 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.timeline-container',
+          start: 'top 40%',
+          end: 'bottom 60%',
+          scrub: true,
+          invalidateOnRefresh: true,
+        }
       });
       gsap.utils.toArray('.career-item').forEach((item: any) => {
         const left = item.querySelector('.career-left');
@@ -404,10 +409,10 @@ export default function Hero() {
         const initialScale = isDesktop ? 0.88 : 0.95;
         const initialBlur = isDesktop ? 'blur(16px)' : 'blur(4px)';
 
-        gsap.set(inner, { 
+        gsap.set(inner, {
           y: initialY,
-          scale: initialScale, 
-          filter: initialBlur, 
+          scale: initialScale,
+          filter: initialBlur,
           opacity: 0,
           transformOrigin: 'top center'
         });
@@ -456,19 +461,18 @@ export default function Hero() {
       )}
 
       {/* ── Sticky 3D Canvas ── */}
-      {isClient && createPortal(
+      {isClient && (
         <div className="fixed inset-0 z-[2] h-screen w-screen pointer-events-none canvas-3d-container">
           <div className="h-full w-full canvas-3d-inner">
             <SplineHeroScene />
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ── Background Halo Glow (behind 3D model) ── */}
-      {isClient && createPortal(
+      {isClient && (
         <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden flex items-center justify-center">
-          <div 
+          <div
             className="bg-halo-glow w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full blur-[160px]"
             style={{
               ['--glow-color-1' as any]: 'rgba(198, 107, 61, 0.20)',
@@ -477,8 +481,7 @@ export default function Hero() {
               mixBlendMode: 'screen' as any
             }}
           />
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ── Scroll Down Indicator ── */}
@@ -503,8 +506,8 @@ export default function Hero() {
       {/* Modular Section Rendering */}
       <HeroIntroSection />
       <TechnicalProfileSection />
-      <AboutMeSection />
       <ShowreelSection />
+      <AboutMeSection />
       <CareerSection />
       <ProjectsSection />
       <ContactSection />

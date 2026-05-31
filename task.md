@@ -103,3 +103,9 @@ Nhật ký đầy đủ và chi tiết các công việc đã thực hiện qua 
   - `[x]` Nâng cấp Quả Cầu Phát Sáng Thủy Tinh (Orb) thành một cấu thể vật lý phản chiếu 2 lớp chất liệu kính mờ kết hợp dải màu nền đa sắc rực rỡ nhưng dịu nhẹ.
   - `[x]` Thêm micro-interactions cho các viền góc bracket, icon chuyển hướng mượt mà khi hover.
   - `[x]` Biên dịch dự án thành công bằng `npm run build` để kiểm tra độ tin cậy.
+
+- `[x]` **Phase 20: Section Ordering & Navigation Dock Swap** (Điều chỉnh thứ tự Section & Cập nhật thanh điều hướng)
+  - `[x]` Đồng bộ lại ID phần tử từ `id="what-i-do"` thành `id="showreel"` trong `ShowreelSection.tsx` để khớp với logic camera/chuyển cảnh.
+  - `[x]` Tráo đổi vị trí của `#showreel` và `#about-me` trong danh sách `CHAPTERS` của `StoryChapterHUD.tsx` để khớp hoàn toàn thứ tự hiển thị thực tế trên màn hình.
+  - `[x]` Điều chỉnh số thứ tự Kicker từ `// 01.5 / ABOUT ME` thành `// 02.5 / ABOUT ME` trong `AboutMeSection.tsx` để đảm bảo chuỗi đếm liên tiếp.
+  - `[x]` Biên dịch dự án thành công bằng `npm run build` để xác minh tính ổn định tuyệt đối.

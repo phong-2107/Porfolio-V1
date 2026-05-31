@@ -3,11 +3,10 @@ import { Github, ArrowUpRight } from 'lucide-react';
 import SkillBadge from './SkillBadge';
 import { playClickSound } from '../utilities/clickSound';
 import ScrambleText from '../utilities/ScrambleText';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { getGsap } from '../../lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger);
+const { gsap, ScrollTrigger } = getGsap();
 
 interface Project {
   id: string;
@@ -175,7 +174,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
   return (
     <div
       ref={containerRef}
-      className={`group relative rounded-[2rem] border border-[color:var(--border-subtle)] hover:border-[color:var(--border-strong)]/60 bg-[color:var(--bg-surface)]/20 transition-all duration-500 cursor-pointer select-none overflow-hidden ${layoutClasses}`}
+      className={`group relative rounded-[2rem] border border-[color:var(--border-subtle)] hover:border-[color:var(--border-strong)]/60 bg-[color:var(--bg-surface)]/20 transition-[border-color,box-shadow,background-color] duration-500 cursor-pointer select-none overflow-hidden ${layoutClasses}`}
       style={{
         perspective: '1200px',
         transformStyle: 'preserve-3d',
@@ -186,7 +185,7 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
     >
       {/* Lớp viền sáng tinh tế xuất hiện khi hover */}
       <div 
-        className="absolute inset-0 z-30 rounded-[2rem] border border-transparent transition-all duration-500 pointer-events-none group-hover:border-[color:var(--border-orange)]/40"
+        className="absolute inset-0 z-30 rounded-[2rem] border border-transparent transition-[border-color,box-shadow] duration-500 pointer-events-none group-hover:border-[color:var(--border-orange)]/40"
         style={{
           boxShadow: 'inset 0 1px 0 rgba(244, 239, 231, 0.04)',
         }}
@@ -338,7 +337,9 @@ export default function ProjectCard({ project, isSectionActive, onExplore }: Pro
                   playClickSound();
                   onExplore();
                 }}
-                className="flex items-center gap-1.5 rounded-full border border-[color:var(--border-glass)] px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-primary)] transition-all hover:bg-[color:var(--accent-orange)] hover:text-[color:var(--bg-deep)] hover:border-transparent cursor-pointer font-mono shadow-[var(--shadow-glass)]"
+                data-motion="magnetic"
+                data-hover-depth="0.2"
+                className="flex items-center gap-1.5 rounded-full border border-[color:var(--border-glass)] px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-primary)] transition-[background-color,color,border-color,box-shadow] hover:bg-[color:var(--accent-orange)] hover:text-[color:var(--bg-deep)] hover:border-transparent cursor-pointer font-mono shadow-[var(--shadow-glass)]"
               >
                 <span>Explore</span>
                 <ArrowUpRight size={11} />
